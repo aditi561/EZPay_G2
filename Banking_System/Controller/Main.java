@@ -53,7 +53,7 @@ public class Main {
         List<String> accounts = new ArrayList<>();
         User user = new User(id, name, email, accounts);
         userController.registerUser(user);
-        System.out.println("✅ User registered successfully.");
+        System.out.println("User registered successfully.");
     }
 
     private static void addBankAccount() {
@@ -68,7 +68,7 @@ public class Main {
 
         BankAccount account = new BankAccount(id, name, accNo, isVerified);
         accountController.addAccount(account);
-        System.out.println("✅ Bank account added successfully.");
+        System.out.println("Bank account added successfully.");
 
         System.out.print("Enter User ID to link this account: ");
         int userId = sc.nextInt();
@@ -76,9 +76,9 @@ public class Main {
         if (user != null) {
             user.getAccounts().add(accNo);
             userController.updateUser(user);
-            System.out.println("✅ Account linked to user.");
+            System.out.println("Account linked to user.");
         } else {
-            System.out.println("❌ User not found.");
+            System.out.println("User not found.");
         }
     }
 
@@ -95,14 +95,14 @@ public class Main {
         BankAccount receiverAcc = accountController.getAccount(receiver);
 
         if (senderAcc == null || receiverAcc == null) {
-            System.out.println("❌ Sender or Receiver account not found.");
+            System.out.println("Sender or Receiver account not found.");
             return;
         }
 
         Transfer transfer = new Transfer(0, sender, receiver, amount, LocalDateTime.now(), true);
         transferController.makeTransfer(transfer);
 
-        System.out.println("✅ Transfer successful.");
+        System.out.println("Transfer successful.");
     }
 
     private static void viewAllUsers() {
