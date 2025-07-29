@@ -14,7 +14,7 @@ import java.util.Scanner;
  * Provides a menu-driven interface for user registration, account linking, and transfers.
  */
 
-public class Main_Application {
+public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
     private static final userController userController = new userController();
