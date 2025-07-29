@@ -1,20 +1,30 @@
-package com.ezpay.bank.main;
+package com.ezpay.bank.controller;
 
-import com.ezpay.bank.controller.*;
-import com.ezpay.bank.model.*;
+import com.ezpay.bank.model.BankAccount;
+import com.ezpay.bank.model.Transfer;
+import com.ezpay.bank.model.User;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
-public class Main {
+/**
+ * Main entry point for the EZPay Banking System.
+ * Provides a menu-driven interface for user registration, account linking, and transfers.
+ */
 
-    private static final Scanner sc = new Scanner(System.in);
+public class Main_Application {
+
+    private static final Scanner scanner = new Scanner(System.in);
     private static final userController userController = new userController();
     private static final bankAccountController accountController = new bankAccountController();
     private static final transferController transferController = new transferController();
 
     public static void main(String[] args) {
         int choice;
+
+        // Display menu until user chooses to exit
         do {
             System.out.println("\n======= EZPay Banking System =======");
             System.out.println("1. Register User");
@@ -25,8 +35,8 @@ public class Main {
             System.out.println("6. View All Transfers");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
-            choice = sc.nextInt();
-            sc.nextLine(); // consume newline
+            choice = scanner.nextInt();
+            scanner.nextLine(); // consume newline
 
             switch (choice) {
                 case 1 -> registerUser();
@@ -41,14 +51,17 @@ public class Main {
         } while (choice != 0);
     }
 
+    /**
+     * Registers a new user in the system.
+     */
     private static void registerUser() {
         System.out.print("Enter User ID: ");
-        int id = sc.nextInt();
-        sc.nextLine();
+        int id = scanner.nextInt();
+        scanner.nextLine();
         System.out.print("Enter Name: ");
-        String name = sc.nextLine();
+        String name = scanner.nextLine();
         System.out.print("Enter Email: ");
-        String email = sc.nextLine();
+        String email = scanner.nextLine();
 
         List<String> accounts = new ArrayList<>();
         User user = new User(id, name, email, accounts);
@@ -56,22 +69,27 @@ public class Main {
         System.out.println("User registered successfully.");
     }
 
+    /**
+     * Adds a bank account and links it to a user.
+     */
     private static void addBankAccount() {
         System.out.print("Enter Bank ID: ");
-        int id = sc.nextInt(); sc.nextLine();
+        int id = scanner.nextInt();
+        scanner.nextLine();
         System.out.print("Enter Bank Name: ");
-        String name = sc.nextLine();
+        String name = scanner.nextLine();
         System.out.print("Enter Account Number: ");
-        String accNo = sc.nextLine();
+        String accNo = scanner.nextLine();
         System.out.print("Is Verified (true/false): ");
-        boolean isVerified = sc.nextBoolean();
+        boolean isVerified = scanner.nextBoolean();
 
         BankAccount account = new BankAccount(id, name, accNo, isVerified);
         accountController.addAccount(account);
         System.out.println("Bank account added successfully.");
 
+        // Link account to user
         System.out.print("Enter User ID to link this account: ");
-        int userId = sc.nextInt();
+        int userId = scanner.nextInt();
         User user = userController.getUser(userId);
         if (user != null) {
             user.getAccounts().add(accNo);
@@ -82,14 +100,18 @@ public class Main {
         }
     }
 
+    /**
+     * Performs a money transfer between two bank accounts.
+     */
     private static void makeTransfer() {
+        scanner.nextLine(); // Clear buffer
         System.out.print("Enter Sender Account Number: ");
-        String sender = sc.nextLine();
+        String sender = scanner.nextLine();
         System.out.print("Enter Receiver Account Number: ");
-        String receiver = sc.nextLine();
+        String receiver = scanner.nextLine();
         System.out.print("Enter Amount: ₹");
-        double amount = sc.nextDouble();
-        sc.nextLine();
+        double amount = scanner.nextDouble();
+        scanner.nextLine();
 
         BankAccount senderAcc = accountController.getAccount(sender);
         BankAccount receiverAcc = accountController.getAccount(receiver);
@@ -105,6 +127,9 @@ public class Main {
         System.out.println("Transfer successful.");
     }
 
+    /**
+     * Displays all registered users.
+     */
     private static void viewAllUsers() {
         List<User> users = userController.getAllUsers();
         System.out.println("\nRegistered Users:");
@@ -113,6 +138,9 @@ public class Main {
         }
     }
 
+    /**
+     * Displays all bank accounts in the system.
+     */
     private static void viewAllBankAccounts() {
         List<BankAccount> accounts = accountController.getAllAccounts();
         System.out.println("\nBank Accounts:");
@@ -121,6 +149,9 @@ public class Main {
         }
     }
 
+    /**
+     * Displays all transfers made in the system.
+     */
     private static void viewAllTransfers() {
         List<Transfer> transfers = transferController.getAllTransfers();
         System.out.println("\nTransfers:");
