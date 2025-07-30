@@ -1,17 +1,17 @@
 package com.ezpay.bank.controller;
 
 import com.ezpay.bank.model.Transfer;
-import com.ezpay.bank.service.transferService;
-import com.ezpay.bank.service.transferServiceImpl;
+import com.ezpay.bank.service.TransferService;
+import com.ezpay.bank.service.TransferServiceImpl;
 
 import java.util.List;
 
 /**
  * Controller class for managing transfer-related operations.
  */
-public class transferController {
+public class TransferController {
 
-    private final transferService transferService = new transferServiceImpl();
+    private final TransferService transferService = new TransferServiceImpl();
 
     /**
      * Initiates a money transfer.
