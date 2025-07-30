@@ -14,6 +14,10 @@ import org.mockito.MockitoAnnotations;
 import java.util.Optional;
 import java.util.List;
 
+/**
+ * Unit tests for BankAccountServiceImpl.
+ * This class tests various functionalities related to bank account operations.
+ */
 public class BankAccountServiceImplTest {
 
     @Mock
@@ -24,9 +28,14 @@ public class BankAccountServiceImplTest {
 
     private BankAccount testAccount;
 
+    /**
+     * Initialize test data and mock dependencies.
+     */
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
+
+        // Creating a sample BankAccount object
         testAccount = new BankAccount();
         testAccount.setId(1L);
         testAccount.setUserId(101L);
@@ -34,28 +43,41 @@ public class BankAccountServiceImplTest {
         testAccount.setBalance(1000.0);
     }
 
+    /**
+     * Test fetching a bank account by its ID.
+     */
     @Test
     public void testGetBankAccountById() {
         when(bankAccountRepository.findById(1L)).thenReturn(Optional.of(testAccount));
+
         BankAccount account = bankAccountService.getBankAccountById(1L);
+
         assertNotNull(account);
         assertEquals("123456789", account.getAccountNumber());
     }
 
+    /**
+     * Test saving a new bank account.
+     */
     @Test
     public void testAddBankAccount() {
         when(bankAccountRepository.save(any(BankAccount.class))).thenReturn(testAccount);
+
         BankAccount saved = bankAccountService.addBankAccount(testAccount);
+
         assertNotNull(saved);
         assertEquals(testAccount.getUserId(), saved.getUserId());
     }
 
+    /**
+     * Test retrieving all bank accounts for a specific user.
+     */
     @Test
     public void testGetAllBankAccountsForUser() {
-        List<BankAccount> mockList = List.of(testAccount);
-        when(bankAccountRepository.findByUserId(101L)).thenReturn(mockList);
+        when(bankAccountRepository.findByUserId(101L)).thenReturn(List.of(testAccount));
+
         List<BankAccount> accounts = bankAccountService.getAllBankAccountsForUser(101L);
+
         assertEquals(1, accounts.size());
     }
 }
-
