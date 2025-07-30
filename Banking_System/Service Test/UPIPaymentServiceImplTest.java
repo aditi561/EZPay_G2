@@ -15,6 +15,10 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
+/**
+ * Unit tests for UPIPaymentServiceImpl.
+ * This class tests the logic for processing UPI-based fund transfers.
+ */
 public class UPIPaymentServiceImplTest {
 
     @Mock
@@ -29,21 +33,29 @@ public class UPIPaymentServiceImplTest {
     private BankAccount senderAccount;
     private BankAccount receiverAccount;
 
+    /**
+     * Setup method to initialize common test data.
+     */
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
+        // Mock sender account with UPI and balance
         senderAccount = new BankAccount();
         senderAccount.setId(10L);
         senderAccount.setUpiId("sender@upi");
         senderAccount.setBalance(1500.0);
 
+        // Mock receiver account with UPI and balance
         receiverAccount = new BankAccount();
         receiverAccount.setId(20L);
         receiverAccount.setUpiId("receiver@upi");
         receiverAccount.setBalance(500.0);
     }
 
+    /**
+     * Test successful UPI transaction between valid users with sufficient balance.
+     */
     @Test
     public void testSuccessfulUPIPayment() {
         UPIRequest request = new UPIRequest("sender@upi", "receiver@upi", 500.0);
@@ -60,9 +72,13 @@ public class UPIPaymentServiceImplTest {
         verify(transactionRepository, times(1)).save(any());
     }
 
+    /**
+     * Test UPI transfer fails due to insufficient balance in sender's account.
+     */
     @Test
     public void testUPIPaymentInsufficientBalance() {
-        senderAccount.setBalance(300.0);
+        senderAccount.setBalance(300.0); // Less than requested transfer amount
+
         UPIRequest request = new UPIRequest("sender@upi", "receiver@upi", 500.0);
 
         when(bankAccountRepository.findByUpiId("sender@upi")).thenReturn(Optional.of(senderAccount));
@@ -73,6 +89,9 @@ public class UPIPaymentServiceImplTest {
         verify(transactionRepository, never()).save(any());
     }
 
+    /**
+     * Test UPI transfer fails due to invalid receiver UPI ID.
+     */
     @Test
     public void testUPIPaymentInvalidReceiver() {
         UPIRequest request = new UPIRequest("sender@upi", "invalid@upi", 100.0);
@@ -84,4 +103,3 @@ public class UPIPaymentServiceImplTest {
         assertFalse(result);
     }
 }
-
