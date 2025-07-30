@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Implementation of the TransferService interface for managing transfers.
  */
-public class transferServiceImpl implements transferService {
+public class TransferServiceImpl implements TransferService {
 
     private final TransferDao transferDao = new TransferDaoImpl();
 
