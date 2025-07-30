@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Service interface for handling transfer-related operations.
  */
-public interface transferService {
+public interface TransferService {
 
     /**
      * Records a new transfer.
