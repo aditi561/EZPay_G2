@@ -9,7 +9,7 @@ import java.util.List;
  * Implementation of the UserService interface.
  * Provides business logic for managing user operations such as registration, retrieval, update, and deletion.
  */
-public class userServiceImpl implements userService {
+public class UserServiceImpl implements UserService {
 
     private UserDao userDao = new UserDaoImpl();
 
