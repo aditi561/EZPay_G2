@@ -15,6 +15,10 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
+/**
+ * Unit tests for TransferServiceImpl.
+ * This class verifies the logic for transferring funds between bank accounts.
+ */
 public class TransferServiceImplTest {
 
     @Mock
@@ -29,19 +33,27 @@ public class TransferServiceImplTest {
     private BankAccount senderAccount;
     private BankAccount receiverAccount;
 
+    /**
+     * Initializes common test data before each test method.
+     */
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
+        // Create mock sender account
         senderAccount = new BankAccount();
         senderAccount.setId(1L);
         senderAccount.setBalance(5000.0);
 
+        // Create mock receiver account
         receiverAccount = new BankAccount();
         receiverAccount.setId(2L);
         receiverAccount.setBalance(2000.0);
     }
 
+    /**
+     * Test case: Successful fund transfer between valid accounts.
+     */
     @Test
     public void testTransferSuccess() {
         TransferRequest request = new TransferRequest(1L, 2L, 1000.0);
@@ -55,20 +67,24 @@ public class TransferServiceImplTest {
         assertEquals(4000.0, senderAccount.getBalance());
         assertEquals(3000.0, receiverAccount.getBalance());
 
+        // Verify transaction was saved
         verify(transactionRepository, times(1)).save(any());
     }
 
+    /**
+     * Test case: Transfer fails due to insufficient balance.
+     */
     @Test
     public void testTransferInsufficientBalance() {
-        senderAccount.setBalance(500.0);
+        senderAccount.setBalance(500.0); // Not enough to transfer 1000
         TransferRequest request = new TransferRequest(1L, 2L, 1000.0);
 
         when(bankAccountRepository.findById(1L)).thenReturn(Optional.of(senderAccount));
         when(bankAccountRepository.findById(2L)).thenReturn(Optional.of(receiverAccount));
 
         boolean result = transferService.transfer(request);
+
         assertFalse(result);
         verify(transactionRepository, never()).save(any());
     }
 }
-
