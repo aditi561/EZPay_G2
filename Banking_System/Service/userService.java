@@ -7,7 +7,7 @@ import java.util.List;
  * UserService defines the operations related to user management.
  * It acts as an abstraction over user-related business logic.
  */
-public interface userService {
+public interface UserService {
 
     /**
      * Registers a new user in the system.
