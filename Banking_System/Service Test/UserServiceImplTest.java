@@ -14,6 +14,10 @@ import org.mockito.MockitoAnnotations;
 import java.util.Optional;
 import java.util.List;
 
+/**
+ * Unit tests for UserServiceImpl.
+ * This class tests user management functionalities such as registration, lookup, and listing.
+ */
 public class UserServiceImplTest {
 
     @Mock
@@ -24,35 +28,55 @@ public class UserServiceImplTest {
 
     private User testUser;
 
+    /**
+     * Set up a sample user and open Mockito mocks.
+     */
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        // Create a mock user object
         testUser = new User();
         testUser.setId(1L);
         testUser.setUsername("john_doe");
         testUser.setEmail("john@example.com");
     }
 
+    /**
+     * Test registration (saving) of a new user.
+     */
     @Test
     public void testRegisterUser() {
         when(userRepository.save(any(User.class))).thenReturn(testUser);
+
         User registered = userService.registerUser(testUser);
+
         assertNotNull(registered);
         assertEquals("john_doe", registered.getUsername());
     }
 
+    /**
+     * Test finding a user by their unique ID.
+     */
     @Test
     public void testFindUserById() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+
         User user = userService.findUserById(1L);
+
         assertNotNull(user);
         assertEquals("john@example.com", user.getEmail());
     }
 
+    /**
+     * Test listing all users in the system.
+     */
     @Test
     public void testFindAllUsers() {
         when(userRepository.findAll()).thenReturn(List.of(testUser));
+
         List<User> users = userService.findAllUsers();
+
         assertEquals(1, users.size());
         assertEquals("john_doe", users.get(0).getUsername());
     }
