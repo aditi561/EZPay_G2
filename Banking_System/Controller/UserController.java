@@ -1,17 +1,17 @@
 package com.ezpay.bank.controller;
 
 import com.ezpay.bank.model.User;
-import com.ezpay.bank.service.userService;
-import com.ezpay.bank.service.userServiceImpl;
+import com.ezpay.bank.service.UserService;
+import com.ezpay.bank.service.UserServiceImpl;
 
 import java.util.List;
 
 /**
  * Controller class to handle user-related operations.
  */
-public class userController {
+public class UserController {
 
-    private final userService userService = new userServiceImpl();
+    private final UserService userService = new UserServiceImpl();
 
     /**
      * Registers a new user.
