@@ -1,17 +1,17 @@
 package com.ezpay.bank.controller;
 
 import com.ezpay.bank.model.BankAccount;
-import com.ezpay.bank.service.bankAccountService;
-import com.ezpay.bank.service.bankAccountServiceImpl;
+import com.ezpay.bank.service.BankAccountService;
+import com.ezpay.bank.service.BankAccountServiceImpl;
 
 import java.util.List;
 
 /**
  * Controller class for managing bank account operations.
  */
-public class bankAccountController {
+public class BankAccountController {
 
-    private final bankAccountService bankAccountService = new bankAccountServiceImpl();
+    private final BankAccountService bankAccountService = new BankAccountServiceImpl();
 
     /**
      * Adds a new bank account.
