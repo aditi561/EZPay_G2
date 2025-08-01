@@ -1,55 +1,50 @@
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This test class verifies the behavior of BankAccountServiceImpl
- * using only JUnit (no Mockito or Spring Boot test support).
+ * Test class for BankAccountServiceImpl
  */
 public class BankAccountServiceImplTest {
 
-    private BankAccountServiceImpl bankAccountService;
+    private BankAccountServiceImpl service;
 
     @BeforeEach
-    public void setUp() {
-        // Initialize the service manually
-        bankAccountService = new BankAccountServiceImpl();
+    public void setup() {
+        service = new BankAccountServiceImpl();
     }
 
+    /**
+     * Test for deposit method
+     * Verifies that depositing a valid amount updates the balance correctly.
+     */
     @Test
-    public void testAddBankAccount() {
-        // Create dummy data
-        String userId = "user123";
-        String bankName = "Test Bank";
-        String accountNumber = "1234567890";
-        String ifsc = "TEST0001234";
-
-        // Call method
-        String result = bankAccountService.addBankAccount(userId, bankName, accountNumber, ifsc);
-
-        // Validate output
-        assertNotNull(result);  // Assuming result is confirmation message or ID
+    public void testDeposit() {
+        double initialBalance = service.getBalance();
+        service.deposit(500);
+        assertEquals(initialBalance + 500, service.getBalance());
     }
 
+    /**
+     * Test for withdraw method
+     * Verifies that withdrawing a valid amount updates the balance correctly.
+     */
     @Test
-    public void testRemoveBankAccount() {
-        String accountId = "acc123";
-        String result = bankAccountService.removeBankAccount(accountId);
-
-        assertNotNull(result);  // Should return a success/failure message
+    public void testWithdraw() {
+        service.deposit(1000); // Ensure sufficient balance
+        double initialBalance = service.getBalance();
+        service.withdraw(300);
+        assertEquals(initialBalance - 300, service.getBalance());
     }
 
+    /**
+     * Test for withdraw method with insufficient funds
+     * Verifies that balance remains unchanged when withdrawal exceeds current balance.
+     */
     @Test
-    public void testGetAllBankAccounts() {
-        String userId = "user123";
-
-        // Simulate adding an account first (if method is stateful)
-        bankAccountService.addBankAccount(userId, "Bank", "9876543210", "IFSC001");
-
-        // Retrieve list
-        var accounts = bankAccountService.getAllBankAccounts(userId);
-
-        assertNotNull(accounts);
-        assertFalse(accounts.isEmpty());
+    public void testWithdrawInsufficientFunds() {
+        double initialBalance = service.getBalance();
+        service.withdraw(initialBalance + 1000); // More than balance
+        assertEquals(initialBalance, service.getBalance());
     }
 }
