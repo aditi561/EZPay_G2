@@ -1,5 +1,14 @@
+package com.ezpay.bank.service_test;
+
+import com.ezpay.bank.model.User;
+import com.ezpay.bank.service.UserServiceImpl;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -15,33 +24,42 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testRegisterUser() {
-        String username = "testUser";
-        String password = "pass123";
-        String email = "test@example.com";
+    public void testRegisterAndGetUser() {
+        User user = new User(1, "Alice", "alice@example.com", new ArrayList<>());
+        userService.registerUser(user);
 
-        String result = userService.registerUser(username, password, email);
-
-        assertNotNull(result);
-        assertTrue(result.contains("registered") || result.length() > 0);
+        User fetchedUser = userService.getUser(1);
+        assertNotNull(fetchedUser);
+        assertEquals("Alice", fetchedUser.getUserName());
+        assertEquals("alice@example.com", fetchedUser.getEmailId());
     }
 
     @Test
-    public void testAuthenticateUser() {
-        String username = "testUser";
-        String password = "pass123";
+    public void testUpdateUser() {
+        User user = new User(2, "Bob", "bob@example.com", new ArrayList<>());
+        userService.registerUser(user);
 
-        boolean result = userService.authenticateUser(username, password);
+        // Update user name
+        user.setUserName("Bobby");
+        userService.updateUser(user);
 
-        assertTrue(result || !result); // Should simply run and return a boolean
+        User updatedUser = userService.getUser(2);
+        assertEquals("Bobby", updatedUser.getUserName());
     }
 
     @Test
-    public void testGetUserDetails() {
-        String userId = "user123";
+    public void testGetAllUsers() {
+        userService.registerUser(new User(3, "Charlie", "charlie@example.com", new ArrayList<>()));
+        userService.registerUser(new User(4, "Diana", "diana@example.com", new ArrayList<>()));
 
-        var userDetails = userService.getUserDetails(userId);
+        List<User> allUsers = userService.getAllUsers();
+        assertNotNull(allUsers);
+        assertTrue(allUsers.size() >= 2); // Depending on existing users
+    }
 
-        assertNotNull(userDetails); // Should return an object or null
+    @Test
+    public void testNonExistentUserReturnsNull() {
+        User user = userService.getUser(999);
+        assertNull(user);
     }
 }
