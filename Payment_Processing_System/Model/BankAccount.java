@@ -18,6 +18,10 @@ public class BankAccount {
     // Status flag to check if the account is verified
     private boolean isVerified;
     
+ // Add this field
+    private double balance = 0.0;
+
+    
     /**
      * Default constructor
      */
@@ -113,5 +117,13 @@ public class BankAccount {
      */
     public void setVerified(boolean isVerified) {
         this.isVerified = isVerified;
+    }
+    //getting and setting the balance
+    public double getBalance() {
+        return balance;
+    
+    }
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 }
