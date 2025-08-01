@@ -1,4 +1,4 @@
-package com.ezpay.bank.model.dao;
+package com.ezpay.bank.dao;
 
 import com.ezpay.bank.model.Transfer;
 import java.util.List;
