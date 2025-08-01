@@ -1,17 +1,17 @@
 package com.ezpay.bank.controller;
 
 import com.ezpay.bank.model.BankAccount;
-import com.ezpay.bank.service.BankAccountService;
-import com.ezpay.bank.service.BankAccountServiceImpl;
+import com.ezpay.bank.service.BankingService;
+import com.ezpay.bank.service.BankingServiceImpl;
 
 import java.util.List;
 
 /**
  * Controller class for managing bank account operations.
  */
-public class BankAccountController {
+public class BankingServiceController {
 
-    private final BankAccountService bankAccountService = new BankAccountServiceImpl();
+    private final BankingService bankingService = new BankingServiceImpl();
 
     /**
      * Adds a new bank account.
@@ -19,7 +19,7 @@ public class BankAccountController {
      * @param account The BankAccount object to be added.
      */
     public void addAccount(BankAccount account) {
-        bankAccountService.addAccount(account);
+    	bankingService.addAccount(account);
     }
 
     /**
@@ -29,7 +29,7 @@ public class BankAccountController {
      * @return The BankAccount object if found, else null.
      */
     public BankAccount getAccount(String accountNumber) {
-        return bankAccountService.getAccountByNumber(accountNumber);
+        return bankingService.getAccountByNumber(accountNumber);
     }
 
     /**
@@ -38,7 +38,7 @@ public class BankAccountController {
      * @return List of all BankAccount objects.
      */
     public List<BankAccount> getAllAccounts() {
-        return bankAccountService.getAllAccounts();
+        return bankingService.getAllAccounts();
     }
 
     /**
@@ -47,7 +47,7 @@ public class BankAccountController {
      * @param account The BankAccount object with updated details.
      */
     public void updateAccount(BankAccount account) {
-        bankAccountService.updateAccount(account);
+    	bankingService.updateAccount(account);
     }
 
     /**
@@ -56,6 +56,6 @@ public class BankAccountController {
      * @param accountNumber The account number of the bank account to delete.
      */
     public void deleteAccount(String accountNumber) {
-        bankAccountService.deleteAccount(accountNumber);
+    	bankingService.deleteAccount(accountNumber);
     }
 }
