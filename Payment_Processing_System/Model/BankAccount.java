@@ -7,16 +7,21 @@ import java.util.*;
  */
 public class BankAccount {
     // Unique identifier for the bank account
-    private int Bankid;
+    private int bankid;
 
     // Name of the bank (e.g., SBI, HDFC, ICICI)
-    private String BankName;
+    private String bankName;
 
     // Account number associated with the bank
     private String accountNumber;
 
     // Status flag to check if the account is verified
     private boolean isVerified;
+    
+    /**
+     * Default constructor
+     */
+    public BankAccount() {}
 
     /**
      * Constructor to initialize a bank account object with given details.
@@ -28,8 +33,8 @@ public class BankAccount {
      */
     public BankAccount(int bankid, String bankName, String accountNumber, boolean isVerified) {
         super();
-        this.Bankid = bankid;
-        this.BankName = bankName;
+        this.bankid = bankid;
+        this.bankName = bankName;
         this.accountNumber = accountNumber;
         this.isVerified = isVerified;
     }
@@ -42,7 +47,7 @@ public class BankAccount {
      * @return Bank ID
      */
     public int getBankid() {
-        return Bankid;
+        return bankid;
     }
 
     /**
@@ -51,7 +56,7 @@ public class BankAccount {
      * @return Bank name
      */
     public String getBankName() {
-        return BankName;
+        return bankName;
     }
 
     /**
@@ -80,7 +85,7 @@ public class BankAccount {
      * @param bankid Bank ID
      */
     public void setBankid(int bankid) {
-        this.Bankid = bankid;
+        this.bankid = bankid;
     }
 
     /**
@@ -89,7 +94,7 @@ public class BankAccount {
      * @param bankName Name of the bank
      */
     public void setBankName(String bankName) {
-        this.BankName = bankName;
+        this.bankName = bankName;
     }
 
     /**
