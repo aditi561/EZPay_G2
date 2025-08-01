@@ -11,28 +11,31 @@ import java.util.Scanner;
 
 /**
  * Main entry point for the EZPay Banking System.
- * Provides a menu-driven interface for user registration, account linking, and transfers.
+ * Supports user registration, banking transfers, UPI payments, and account management.
  */
-
 public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
-    private static final userController userController = new userController();
-    private static final bankAccountController accountController = new bankAccountController();
-    private static final transferController transferController = new transferController();
+    private static final UserController userController = new UserController();
+    private static final BankingServiceController accountController = new BankingServiceController();
+    private static final TransferController transferController = new TransferController();
+    private static final UPIPaymentController upiPaymentController = new UPIPaymentController();
 
     public static void main(String[] args) {
         int choice;
 
-        // Display menu until user chooses to exit
+        System.out.println("🌟 Welcome to the EZPay Payment Processing System 🌟");
+
         do {
-            System.out.println("\n======= EZPay Banking System =======");
+            System.out.println("\n======= EZPay Banking System Menu =======");
             System.out.println("1. Register User");
             System.out.println("2. Add Bank Account");
-            System.out.println("3. Make a Transfer");
-            System.out.println("4. View All Users");
-            System.out.println("5. View All Bank Accounts");
-            System.out.println("6. View All Transfers");
+            System.out.println("3. Make a Bank Transfer");
+            System.out.println("4. Make a UPI Payment");
+            System.out.println("5. View All Users");
+            System.out.println("6. View All Bank Accounts");
+            System.out.println("7. View All Transfers");
+            System.out.println("8. View UPI Transfers by Sender ID");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
@@ -41,18 +44,20 @@ public class Main {
             switch (choice) {
                 case 1 -> registerUser();
                 case 2 -> addBankAccount();
-                case 3 -> makeTransfer();
-                case 4 -> viewAllUsers();
-                case 5 -> viewAllBankAccounts();
-                case 6 -> viewAllTransfers();
-                case 0 -> System.out.println("Exiting... Thank you for using EZPay!");
-                default -> System.out.println("Invalid choice. Please try again.");
+                case 3 -> makeBankTransfer();
+                case 4 -> makeUPIPayment();
+                case 5 -> viewAllUsers();
+                case 6 -> viewAllBankAccounts();
+                case 7 -> viewAllTransfers();
+                case 8 -> viewUPITransfersBySender();
+                case 0 -> System.out.println("👋 Exiting... Thank you for using EZPay!");
+                default -> System.out.println("❌ Invalid choice. Please try again.");
             }
         } while (choice != 0);
     }
 
     /**
-     * Registers a new user in the system.
+     * Register a new user with required details.
      */
     private static void registerUser() {
         System.out.print("Enter User ID: ");
@@ -63,14 +68,13 @@ public class Main {
         System.out.print("Enter Email: ");
         String email = scanner.nextLine();
 
-        List<String> accounts = new ArrayList<>();
-        User user = new User(id, name, email, accounts);
+        User user = new User(id, name, email, new ArrayList<>());
         userController.registerUser(user);
-        System.out.println("User registered successfully.");
+        System.out.println("✅ User registered successfully.");
     }
 
     /**
-     * Adds a bank account and links it to a user.
+     * Add and link a bank account to a user.
      */
     private static void addBankAccount() {
         System.out.print("Enter Bank ID: ");
@@ -85,26 +89,26 @@ public class Main {
 
         BankAccount account = new BankAccount(id, name, accNo, isVerified);
         accountController.addAccount(account);
-        System.out.println("Bank account added successfully.");
+        System.out.println("✅ Bank account added successfully.");
 
-        // Link account to user
         System.out.print("Enter User ID to link this account: ");
         int userId = scanner.nextInt();
+        scanner.nextLine();
+
         User user = userController.getUser(userId);
         if (user != null) {
             user.getAccounts().add(accNo);
             userController.updateUser(user);
-            System.out.println("Account linked to user.");
+            System.out.println("🔗 Account linked to user.");
         } else {
-            System.out.println("User not found.");
+            System.out.println("⚠️ User not found.");
         }
     }
 
     /**
-     * Performs a money transfer between two bank accounts.
+     * Perform bank transfer between two accounts.
      */
-    private static void makeTransfer() {
-        scanner.nextLine(); // Clear buffer
+    private static void makeBankTransfer() {
         System.out.print("Enter Sender Account Number: ");
         String sender = scanner.nextLine();
         System.out.print("Enter Receiver Account Number: ");
@@ -117,47 +121,87 @@ public class Main {
         BankAccount receiverAcc = accountController.getAccount(receiver);
 
         if (senderAcc == null || receiverAcc == null) {
-            System.out.println("Sender or Receiver account not found.");
+            System.out.println("⚠️ Sender or Receiver account not found.");
             return;
         }
 
         Transfer transfer = new Transfer(0, sender, receiver, amount, LocalDateTime.now(), true);
         transferController.makeTransfer(transfer);
-
-        System.out.println("Transfer successful.");
+        System.out.println("✅ Bank Transfer successful.");
     }
 
     /**
-     * Displays all registered users.
+     * Perform UPI payment using UPI ID.
+     */
+    private static void makeUPIPayment() {
+        System.out.print("Enter Sender ID (User ID or Account Number): ");
+        String senderId = scanner.nextLine();
+        System.out.print("Enter Receiver UPI ID: ");
+        String receiverUpiId = scanner.nextLine();
+        System.out.print("Enter Amount: ₹");
+        double amount = scanner.nextDouble();
+        scanner.nextLine();
+
+        Transfer upiTransfer = new Transfer();
+        upiTransfer.setSenderAccountNumber(senderId);
+        upiTransfer.setReceiverAccountNumber(receiverUpiId);
+        upiTransfer.setAmount(amount);
+        upiTransfer.setTransferDateTime(LocalDateTime.now());
+
+        String result = upiPaymentController.makeUPIPayment(upiTransfer);
+        System.out.println(result);
+    }
+
+    /**
+     * Show all users.
      */
     private static void viewAllUsers() {
         List<User> users = userController.getAllUsers();
-        System.out.println("\nRegistered Users:");
+        System.out.println("\n👤 Registered Users:");
         for (User u : users) {
             System.out.println("ID: " + u.getUserID() + ", Name: " + u.getUserName() + ", Email: " + u.getEmailId());
         }
     }
 
     /**
-     * Displays all bank accounts in the system.
+     * Show all bank accounts.
      */
     private static void viewAllBankAccounts() {
         List<BankAccount> accounts = accountController.getAllAccounts();
-        System.out.println("\nBank Accounts:");
+        System.out.println("\n🏦 Bank Accounts:");
         for (BankAccount acc : accounts) {
             System.out.println(acc.getAccountNumber() + " - " + acc.getBankName() + " [Verified: " + acc.isVerified() + "]");
         }
     }
 
     /**
-     * Displays all transfers made in the system.
+     * Show all banking transfers.
      */
     private static void viewAllTransfers() {
         List<Transfer> transfers = transferController.getAllTransfers();
-        System.out.println("\nTransfers:");
+        System.out.println("\n💸 Bank Transfers:");
         for (Transfer t : transfers) {
             System.out.println("Transfer ID: " + t.getTransferId() + ", From: " + t.getSenderAccountNumber() +
                     ", To: " + t.getReceiverAccountNumber() + ", ₹" + t.getAmount() + ", Date: " + t.getTransferDateTime());
+        }
+    }
+
+    /**
+     * Show UPI transfers for a specific sender ID.
+     */
+    private static void viewUPITransfersBySender() {
+        System.out.print("Enter Sender ID to view UPI transfers: ");
+        String senderId = scanner.nextLine();
+        List<Transfer> upiTransfers = upiPaymentController.getTransfersBySender(senderId);
+
+        System.out.println("\n📱 UPI Transfers:");
+        for (Transfer t : upiTransfers) {
+            System.out.println("Transfer ID: " + t.getTransferId() + ", To UPI: " + t.getReceiverAccountNumber() +
+                    ", ₹" + t.getAmount() + ", Date: " + t.getTransferDateTime());
+        }
+
+        if (upiTransfers.isEmpty()) {
+            System.out.println("No UPI transfers found for sender: " + senderId);
         }
     }
 }
