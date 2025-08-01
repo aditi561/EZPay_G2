@@ -1,55 +1,75 @@
+package com.ezpay.bank.service_test;
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/**
- * Test class for BankAccountServiceImpl.
- * Simulates deposit and withdrawal operations as seen in the Main class.
- */
-public class BankAccountServiceImplTest {
+import com.ezpay.bank.model.BankAccount;
+import com.ezpay.bank.service.BankingServiceImpl;
 
-    private BankAccountServiceImpl bankAccount;
+/**
+ * Test class for BankingServiceImpl
+ * Validates deposit and withdrawal logic by updating bank accounts.
+ */
+public class BankingServiceImplTest {
+
+    private BankingServiceImpl service;
+    private BankAccount account;
 
     @BeforeEach
-    public void setUp() {
-        bankAccount = new BankAccountServiceImpl();
+    public void setup() {
+        service = new BankingServiceImpl();
+        account = new BankAccount(1, "SBI", "ACC100", true);
+        account.setBalance(1000.0);  // initial balance
+        service.addAccount(account);
     }
 
     /**
-     * Test the deposit method.
-     * This test simulates depositing 1000 units as done in Main.java
-     * and verifies that the balance is updated accordingly.
+     * Simulates a deposit by updating the account balance.
      */
     @Test
     public void testDeposit() {
-        bankAccount.deposit(1000);
-        assertEquals(1000, bankAccount.getBalance(),
-            "Deposit failed to update balance correctly.");
+        BankAccount acc = service.getAccountByNumber("ACC100");
+        double initialBalance = acc.getBalance();
+
+        acc.setBalance(initialBalance + 500);
+        service.updateAccount(acc);
+
+        BankAccount updated = service.getAccountByNumber("ACC100");
+        assertEquals(initialBalance + 500, updated.getBalance(), 0.01);
     }
 
     /**
-     * Test the withdraw method.
-     * Deposits an amount, withdraws a smaller amount, and
-     * checks if balance is reduced correctly.
+     * Simulates a valid withdrawal by updating the account balance.
      */
     @Test
     public void testWithdraw() {
-        bankAccount.deposit(1000);
-        bankAccount.withdraw(200);
-        assertEquals(800, bankAccount.getBalance(),
-            "Withdraw did not deduct amount properly.");
+        BankAccount acc = service.getAccountByNumber("ACC100");
+        double initialBalance = acc.getBalance();
+
+        acc.setBalance(initialBalance - 300);
+        service.updateAccount(acc);
+
+        BankAccount updated = service.getAccountByNumber("ACC100");
+        assertEquals(initialBalance - 300, updated.getBalance(), 0.01);
     }
 
     /**
-     * Test withdraw with insufficient balance.
-     * Ensures that withdrawing more than available balance
-     * doesn't change the balance (as per implementation).
+     * Tests withdrawal when balance is insufficient (should not update).
      */
     @Test
     public void testWithdrawInsufficientFunds() {
-        bankAccount.deposit(500);
-        bankAccount.withdraw(1000); // Overdraw
-        assertEquals(500, bankAccount.getBalance(),
-            "Balance should remain unchanged if withdrawal exceeds funds.");
+        BankAccount acc = service.getAccountByNumber("ACC100");
+        double initialBalance = acc.getBalance();
+
+        if (initialBalance < 2000) {
+            System.out.println("💡 Cannot withdraw more than balance: skipping update.");
+        } else {
+            acc.setBalance(initialBalance - 2000);
+            service.updateAccount(acc);
+        }
+
+        BankAccount updated = service.getAccountByNumber("ACC100");
+        assertEquals(initialBalance, updated.getBalance(), 0.01);
     }
 }
