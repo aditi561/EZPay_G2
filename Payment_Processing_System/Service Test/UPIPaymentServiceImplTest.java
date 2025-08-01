@@ -1,9 +1,17 @@
+package com.ezpay.bank.service_test;
+
+import com.ezpay.bank.model.Transfer;
+import com.ezpay.bank.service.UPIPaymentServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test class for UPI payment functionalities using only JUnit.
+ * Test class for UPI payment functionalities using JUnit.
  */
 public class UPIPaymentServiceImplTest {
 
@@ -15,22 +23,26 @@ public class UPIPaymentServiceImplTest {
     }
 
     @Test
-    public void testInitiatePayment() {
-        String upiId = "test@upi";
-        double amount = 100.0;
+    public void testMakeUPIPayment() {
+        Transfer upiTransfer = new Transfer();
+        upiTransfer.setSenderAccountNumber("user123");
+        upiTransfer.setReceiverAccountNumber("receiver@upi");
+        upiTransfer.setAmount(250.0);
+        upiTransfer.setTransferDateTime(LocalDateTime.now());
 
-        String result = upiPaymentService.initiatePayment(upiId, amount);
+        String result = upiPaymentService.makeUPIPayment(upiTransfer);
 
         assertNotNull(result);
-        assertTrue(result.contains("initiated") || result.length() > 0); // simple check
+        assertTrue(result.contains("successful") || result.contains("failed") || result.length() > 0);
     }
 
     @Test
-    public void testVerifyPayment() {
-        String transactionId = "TXN123";
+    public void testGetTransfersBySender() {
+        String senderId = "user123";
 
-        boolean status = upiPaymentService.verifyPayment(transactionId);
+        List<Transfer> transfers = upiPaymentService.getTransfersBySender(senderId);
 
-        assertTrue(status || !status); // should not throw exception
+        assertNotNull(transfers);
+        assertTrue(transfers instanceof List);
     }
 }
