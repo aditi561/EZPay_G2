@@ -1,48 +1,55 @@
-package com.ezpay.bank.service_test;
+package com.ezpay.bank.model.dao;
 
 import com.ezpay.bank.model.Transfer;
-import com.ezpay.bank.service.UPIPaymentServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
- * Test class for UPI payment functionalities using JUnit.
+ * Author: Muskan Sinha
+ * Reviewer: [Reviewer Name]
+ * Date of Review: [DD-MM-YYYY]
+ *
+ * This class represents the in-memory implementation of the UPIPaymentDAO interface.
+ * It simulates a database using a list of Transfer objects for UPI transactions.
  */
-public class UPIPaymentServiceImplTest {
 
-    private UPIPaymentServiceImpl upiPaymentService;
+// Class Naming Convention: Follows PascalCase as per Java standards
+public class UPIPaymentDAOImpl implements UPIPaymentDAO {
 
-    @BeforeEach
-    public void setUp() {
-        upiPaymentService = new UPIPaymentServiceImpl();
+    // All Variables Named Properly, Variable Naming: Descriptive and camelCase
+    private final List<Transfer> upiTransfers = new ArrayList<>(); // Class Members
+
+    /**
+     * Business Logic Comments:
+     * Adds a new UPI transfer to the in-memory list (simulated DB).
+     *
+     * @param transfer Transfer object representing payment details  // Input/Output Parameters Mentioned
+     * @return true if transfer is saved successfully
+     */
+    @Override
+    public boolean saveUPITransfer(Transfer transfer) {
+        // Comments Before Validation Logic: No validation needed here for demo
+        upiTransfers.add(transfer);
+        return true;
     }
 
-    @Test
-    public void testMakeUPIPayment() {
-        Transfer upiTransfer = new Transfer();
-        upiTransfer.setSenderAccountNumber("user123");
-        upiTransfer.setReceiverAccountNumber("receiver@upi");
-        upiTransfer.setAmount(250.0);
-        upiTransfer.setTransferDateTime(LocalDateTime.now());
+    /**
+     * Business Logic Comments:
+     * Fetches all UPI transactions by sender's account number.
+     *
+     * @param senderAccount Sender's UPI/account identifier  // Input/Output Parameters Mentioned
+     * @return List of transfers by that sender
+     */
+    @Override
+    public List<Transfer> getTransfersBySender(String senderAccount) {
+        List<Transfer> result = new ArrayList<>();
 
-        String result = upiPaymentService.makeUPIPayment(upiTransfer);
+        for (Transfer t : upiTransfers) {
+            if (t.getSenderAccountNumber().equals(senderAccount)) {
+                result.add(t);
+            }
+        }
 
-        assertNotNull(result);
-        assertTrue(result.contains("successful") || result.contains("failed") || result.length() > 0);
-    }
-
-    @Test
-    public void testGetTransfersBySender() {
-        String senderId = "user123";
-
-        List<Transfer> transfers = upiPaymentService.getTransfersBySender(senderId);
-
-        assertNotNull(transfers);
-        assertTrue(transfers instanceof List);
+        return result;
     }
 }
