@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Interface for managing bank account-related operations.
  */
-public interface BankAccountService {
+public interface BankingService {
 
     /**
      * Adds a new bank account.
