@@ -25,6 +25,11 @@ public class Transfer {
     
     // Status of the transfer: true if successful, false otherwise
     private boolean status;
+    
+    /**
+     * Default constructor
+     */
+    public Transfer() {}
 
     /**
      * Parameterized constructor to initialize all transfer details.
