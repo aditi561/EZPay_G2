@@ -1,4 +1,4 @@
-package com.ezpay.bank.model.dao;
+package com.ezpay.bank.dao;
 
 import com.ezpay.bank.model.Transfer;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.List;
  * This class uses an internal list to simulate a database for storing UPI transactions.
  * Useful for testing or prototype purposes before integrating a real database.
  */
-public class UPIPaymentDAOImpl implements UPIPaymentDAO {
+public class UPIPaymentDaoImpl implements UPIPaymentDao {
 
     // Simulated database: holds all UPI transfer records
     private final List<Transfer> upiTransfers = new ArrayList<>();
