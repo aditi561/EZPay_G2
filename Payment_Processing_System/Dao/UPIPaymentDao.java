@@ -9,7 +9,7 @@ import java.util.List;
  * This interface defines methods for persisting and retrieving UPI transfer data.
  * Implementations may store data in-memory, in a database, or through external APIs.
  */
-public interface UPIPaymentDAO {
+public interface UPIPaymentDao {
 
     /**
      * Saves a UPI transfer record.
