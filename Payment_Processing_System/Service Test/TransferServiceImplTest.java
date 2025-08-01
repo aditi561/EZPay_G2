@@ -1,64 +1,78 @@
+package com.ezpay.bank.service_test;
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.ezpay.bank.model.BankAccount;
+import com.ezpay.bank.model.Transfer;
+import com.ezpay.bank.controller.BankingServiceController;
+import com.ezpay.bank.controller.TransferController;
+import com.ezpay.bank.service.TransferServiceImpl;
+
+import java.time.LocalDateTime;
+
 /**
- * Test class for TransferServiceImpl.
- * Simulates account-to-account transfers like those in Main.java.
+ * Unit tests simulating Main.makeBankTransfer()
  */
 public class TransferServiceImplTest {
 
-    private BankAccountServiceImpl fromAccount;
-    private BankAccountServiceImpl toAccount;
-    private TransferServiceImpl transferService;
+    private BankingServiceController accountController;
+    private TransferController transferController;
+
+    private BankAccount senderAccount;
+    private BankAccount receiverAccount;
 
     @BeforeEach
     public void setUp() {
-        fromAccount = new BankAccountServiceImpl();
-        toAccount = new BankAccountServiceImpl();
-        transferService = new TransferServiceImpl();
+        accountController = new BankingServiceController();
+        transferController = new TransferController();
 
-        // Both accounts start with 1000 balance as in Main.java
-        fromAccount.deposit(1000);
-        toAccount.deposit(1000);
+        senderAccount = new BankAccount(1, "ICICI", "ACC123", true);
+        receiverAccount = new BankAccount(2, "HDFC", "ACC456", true);
+
+        senderAccount.setBalance(1000.0);
+        receiverAccount.setBalance(1000.0);
+
+        accountController.addAccount(senderAccount);
+        accountController.addAccount(receiverAccount);
     }
 
-    /**
-     * Tests a valid transfer of funds from one account to another.
-     * This mimics the transfer of 200 from ICICI to HDFC in Main.java
-     */
     @Test
     public void testSuccessfulTransfer() {
-        transferService.transfer(fromAccount, toAccount, 200);
-        assertEquals(800, fromAccount.getBalance(),
-            "Sender balance after transfer is incorrect.");
-        assertEquals(1200, toAccount.getBalance(),
-            "Receiver balance after transfer is incorrect.");
+        Transfer transfer = new Transfer(0, "ACC123", "ACC456", 200.0, LocalDateTime.now(), true);
+        transferController.makeTransfer(transfer);
+
+        BankAccount updatedSender = accountController.getAccount("ACC123");
+        BankAccount updatedReceiver = accountController.getAccount("ACC456");
+
+        assertEquals(800.0, updatedSender.getBalance(), 0.01);
+        assertEquals(1200.0, updatedReceiver.getBalance(), 0.01);
     }
 
-    /**
-     * Tests a failed transfer due to insufficient balance.
-     * Verifies that neither balance changes if funds are inadequate.
-     */
     @Test
-    public void testTransferWithInsufficientFunds() {
-        transferService.transfer(fromAccount, toAccount, 2000);
-        assertEquals(1000, fromAccount.getBalance(),
-            "Sender balance should remain unchanged.");
-        assertEquals(1000, toAccount.getBalance(),
-            "Receiver balance should remain unchanged.");
+    public void testInsufficientFundsTransfer() {
+        Transfer transfer = new Transfer(0, "ACC123", "ACC456", 2000.0, LocalDateTime.now(), true);
+        transferController.makeTransfer(transfer);
+
+        BankAccount updatedSender = accountController.getAccount("ACC123");
+        BankAccount updatedReceiver = accountController.getAccount("ACC456");
+
+        // Should remain unchanged
+        assertEquals(1000.0, updatedSender.getBalance(), 0.01);
+        assertEquals(1000.0, updatedReceiver.getBalance(), 0.01);
     }
 
-    /**
-     * Tests a zero-amount transfer.
-     * Ensures no change in balances when zero is transferred.
-     */
     @Test
     public void testZeroAmountTransfer() {
-        transferService.transfer(fromAccount, toAccount, 0);
-        assertEquals(1000, fromAccount.getBalance(),
-            "Sender balance should remain unchanged on zero transfer.");
-        assertEquals(1000, toAccount.getBalance(),
-            "Receiver balance should remain unchanged on zero transfer.");
+        Transfer transfer = new Transfer(0, "ACC123", "ACC456", 0.0, LocalDateTime.now(), true);
+        transferController.makeTransfer(transfer);
+
+        BankAccount updatedSender = accountController.getAccount("ACC123");
+        BankAccount updatedReceiver = accountController.getAccount("ACC456");
+
+        // Should remain unchanged
+        assertEquals(1000.0, updatedSender.getBalance(), 0.01);
+        assertEquals(1000.0, updatedReceiver.getBalance(), 0.01);
     }
 }
