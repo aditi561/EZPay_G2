@@ -49,14 +49,14 @@ INSERT INTO transfers (transferId, senderAccountNumber, receiverAccountNumber, a
 -- Describing "users" table
 DESC users; 
 -- Displaying "users" table data
-SELECT * FROM users;
+SELECT userId, userName, emailId FROM users;
 
 -- Describing "bank_accounts" table
 DESC bank_accounts;
 -- Displaying "bank_accounts" table data
-SELECT * FROM bank_accounts;
+SELECT bankid, bankName, accountNumber, isVerified, userID FROM bank_accounts;
 
 -- Describing "transfers" table
 DESC transfers;
 -- Displaying "transfers" table data
-SELECT * FROM transfers;
+SELECT transferId, senderAccountNumber, receiverAccountNumber, amount, transferDateTime, status FROM transfers;
