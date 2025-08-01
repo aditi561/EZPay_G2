@@ -3,48 +3,53 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test class for BankAccountServiceImpl
+ * Test class for BankAccountServiceImpl.
+ * Simulates deposit and withdrawal operations as seen in the Main class.
  */
 public class BankAccountServiceImplTest {
 
-    private BankAccountServiceImpl service;
+    private BankAccountServiceImpl bankAccount;
 
     @BeforeEach
-    public void setup() {
-        service = new BankAccountServiceImpl();
+    public void setUp() {
+        bankAccount = new BankAccountServiceImpl();
     }
 
     /**
-     * Test for deposit method
-     * Verifies that depositing a valid amount updates the balance correctly.
+     * Test the deposit method.
+     * This test simulates depositing 1000 units as done in Main.java
+     * and verifies that the balance is updated accordingly.
      */
     @Test
     public void testDeposit() {
-        double initialBalance = service.getBalance();
-        service.deposit(500);
-        assertEquals(initialBalance + 500, service.getBalance());
+        bankAccount.deposit(1000);
+        assertEquals(1000, bankAccount.getBalance(),
+            "Deposit failed to update balance correctly.");
     }
 
     /**
-     * Test for withdraw method
-     * Verifies that withdrawing a valid amount updates the balance correctly.
+     * Test the withdraw method.
+     * Deposits an amount, withdraws a smaller amount, and
+     * checks if balance is reduced correctly.
      */
     @Test
     public void testWithdraw() {
-        service.deposit(1000); // Ensure sufficient balance
-        double initialBalance = service.getBalance();
-        service.withdraw(300);
-        assertEquals(initialBalance - 300, service.getBalance());
+        bankAccount.deposit(1000);
+        bankAccount.withdraw(200);
+        assertEquals(800, bankAccount.getBalance(),
+            "Withdraw did not deduct amount properly.");
     }
 
     /**
-     * Test for withdraw method with insufficient funds
-     * Verifies that balance remains unchanged when withdrawal exceeds current balance.
+     * Test withdraw with insufficient balance.
+     * Ensures that withdrawing more than available balance
+     * doesn't change the balance (as per implementation).
      */
     @Test
     public void testWithdrawInsufficientFunds() {
-        double initialBalance = service.getBalance();
-        service.withdraw(initialBalance + 1000); // More than balance
-        assertEquals(initialBalance, service.getBalance());
+        bankAccount.deposit(500);
+        bankAccount.withdraw(1000); // Overdraw
+        assertEquals(500, bankAccount.getBalance(),
+            "Balance should remain unchanged if withdrawal exceeds funds.");
     }
 }
