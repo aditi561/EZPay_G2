@@ -12,10 +12,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit test class for UserServiceImpl using JUnit.
- * Validates registration, retrieval, update, and listing of users.
+ * Unit tests for UPIPaymentDAO interface using UPIPaymentDAOImpl.
  * 
- * Author - AZIZ
+ * @author: Muskan  
+ * @version: 0.0.1
+ * Date: 2025-08-01
  */
 public class UserServiceImplTest {
 
