@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Muskan
- * @reviewer Va
  * @version 0.0.1
  * @since 2025-07-30
  * @revised 2025-08-01
