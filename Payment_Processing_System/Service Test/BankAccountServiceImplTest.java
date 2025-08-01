@@ -8,12 +8,18 @@ import com.ezpay.bank.model.BankAccount;
 import com.ezpay.bank.service.BankingServiceImpl;
 
 /**
- * Test class for BankingServiceImpl
+ * This class contains the Test class for BankingServiceImpl 
+ * for the transaction data access object
+ *  
  * Validates deposit and withdrawal logic by updating bank accounts.
-
- @ author-Aziz
- @ version-1.0
+ *
+ *
+ * @author Aziz Mehevi
+ * @version 1.0
+ * @since 2025-07-28
+ * @revised 2025-08-01
  */
+
 public class BankingServiceImplTest {
 
     private BankingServiceImpl service;
