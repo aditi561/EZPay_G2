@@ -1,38 +1,54 @@
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Tests for TransferServiceImpl using only JUnit.
+ * Test class for TransferServiceImpl
  */
 public class TransferServiceImplTest {
 
     private TransferServiceImpl transferService;
+    private BankAccountServiceImpl fromAccount;
+    private BankAccountServiceImpl toAccount;
 
     @BeforeEach
-    public void setUp() {
+    public void setup() {
         transferService = new TransferServiceImpl();
+        fromAccount = new BankAccountServiceImpl();
+        toAccount = new BankAccountServiceImpl();
+        fromAccount.deposit(1000);
     }
 
+    /**
+     * Test for successful transfer
+     * Verifies that amount is correctly transferred between accounts.
+     */
     @Test
-    public void testTransferMoney() {
-        String fromAccount = "ACC001";
-        String toAccount = "ACC002";
-        double amount = 500.0;
-
-        String result = transferService.transferMoney(fromAccount, toAccount, amount);
-
-        assertNotNull(result);
-        assertTrue(result.contains("success") || result.contains("Success")); // simple success check
+    public void testTransferSuccess() {
+        transferService.transfer(fromAccount, toAccount, 300);
+        assertEquals(700, fromAccount.getBalance());
+        assertEquals(300, toAccount.getBalance());
     }
 
+    /**
+     * Test for transfer with insufficient funds
+     * Verifies that transfer doesn't happen when balance is insufficient.
+     */
     @Test
-    public void testGetTransactionHistory() {
-        String userId = "user001";
+    public void testTransferInsufficientFunds() {
+        transferService.transfer(fromAccount, toAccount, 1500); // more than available
+        assertEquals(1000, fromAccount.getBalance());
+        assertEquals(0, toAccount.getBalance());
+    }
 
-        // Assuming transaction history exists or the method returns empty list
-        var history = transferService.getTransactionHistory(userId);
-
-        assertNotNull(history); // Ensure the result is not null
+    /**
+     * Test for transfer with zero amount
+     * Verifies that no change occurs when transfer amount is zero.
+     */
+    @Test
+    public void testTransferZeroAmount() {
+        transferService.transfer(fromAccount, toAccount, 0);
+        assertEquals(1000, fromAccount.getBalance());
+        assertEquals(0, toAccount.getBalance());
     }
 }
