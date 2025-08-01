@@ -13,11 +13,20 @@ import java.time.LocalDateTime;
 
 /** This test class tests for multiple test service for Transfer 
     Service for users an service.
- * Unit tests for Transfer operations
-
- @author - Aziz
- @version - 1.0
+ *  Unit tests for Transfer operations
+ *
+ * This class contains the Test class for BankingServiceImpl 
+ * for the transaction data access object
+ *  
+ * Validates deposit and withdrawal logic by updating bank accounts.
+ *
+ *
+ * @author Aziz Mehevi
+ * @version 1.0
+ * @since 2025-07-28
+ * @revised 2025-08-01
  */
+
 public class TransferServiceImplTest {
 
     private TransferController transferController;
@@ -39,6 +48,7 @@ public class TransferServiceImplTest {
         transferController.addAccount(receiverAccount);
     }
 
+    // Case 1: Test case for Successfull Transaction
     @Test
     public void testSuccessfulTransfer() {
         Transfer transfer = new Transfer(0, "ACC123", "ACC456", 200.0, LocalDateTime.now(), true);
@@ -52,6 +62,7 @@ public class TransferServiceImplTest {
         assertTrue(transfer.isStatus());
     }
 
+    // Case 2: Test case for Failed Transaction: Insufficient Funds
     @Test
     public void testInsufficientFundsTransfer() {
         Transfer transfer = new Transfer(0, "ACC123", "ACC456", 2000.0, LocalDateTime.now(), true);
@@ -65,6 +76,7 @@ public class TransferServiceImplTest {
         assertFalse(transfer.isStatus());
     }
 
+    // Case 3: Test case for User Entered 'zero' amount to transfer
     @Test
     public void testZeroAmountTransfer() {
         Transfer transfer = new Transfer(0, "ACC123", "ACC456", 0.0, LocalDateTime.now(), true);
