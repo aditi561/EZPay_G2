@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Implementation of BankAccountService for handling bank account operations.
  */
-public class BankAccountServiceImpl implements BankAccountService {
+public class BankingServiceImpl implements BankingService {
 
     private final BankAccountDao bankAccountDao = new BankAccountDaoImpl();
 
