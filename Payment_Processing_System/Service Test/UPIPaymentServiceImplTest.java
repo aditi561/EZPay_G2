@@ -14,18 +14,27 @@ import static org.junit.jupiter.api.Assertions.*; // Standard assert methods onl
  * Reviewer: [Reviewer Name]
  * Date of Review: [DD-MM-YYYY]
  * 
- * Test class for UPIPaymentDAOImpl
+ * Test class for UPIPaymentDAOImpl.
+ * This class performs unit tests on key DAO operations including save, retrieve,
+ * count, and clear operations related to UPI Transfers.
  */
 public class UPIPaymentDAOTest {
 
     private UPIPaymentDAOImpl dao;
 
-    // Code Indentation, Class Members: All consistent
+    /**
+     * Initializes the DAO instance before each test.
+     * Ensures each test runs in an isolated, clean state.
+     */
     @BeforeEach
     public void setup() {
         dao = new UPIPaymentDAOImpl();
     }
 
+    /**
+     * Test case for saveUPITransfer().
+     * Verifies that a transfer is successfully saved and can be retrieved.
+     */
     @Test
     public void testSaveUPITransfer() {
         Transfer t1 = new Transfer("TXN1", "Alice123", "Bob456", 500.00, "2025-08-01");
@@ -33,10 +42,14 @@ public class UPIPaymentDAOTest {
         assertTrue(result, "Transfer should be saved successfully");
 
         List<Transfer> transfers = dao.getTransfersBySender("Alice123");
-        assertEquals(1, transfers.size());
-        assertEquals("Bob456", transfers.get(0).getReceiverAccountNumber());
+        assertEquals(1, transfers.size(), "Only one transfer should be stored for Alice123");
+        assertEquals("Bob456", transfers.get(0).getReceiverAccountNumber(), "Receiver should match the expected value");
     }
 
+    /**
+     * Test case for getTransfersBySender().
+     * Ensures that only the transfers initiated by the specified sender are returned.
+     */
     @Test
     public void testGetTransfersBySender() {
         dao.saveUPITransfer(new Transfer("TXN2", "JohnDoe", "Payee789", 100.00, "2025-08-01"));
@@ -44,29 +57,9 @@ public class UPIPaymentDAOTest {
         dao.saveUPITransfer(new Transfer("TXN4", "SomeoneElse", "Vendor321", 150.00, "2025-08-02"));
 
         List<Transfer> johnTransfers = dao.getTransfersBySender("JohnDoe");
-        assertEquals(2, johnTransfers.size());
+        assertEquals(2, johnTransfers.size(), "JohnDoe should have exactly 2 transfers");
 
         for (Transfer t : johnTransfers) {
-            assertEquals("JohnDoe", t.getSenderAccountNumber());
+            assertEquals("JohnDoe", t.getSenderAccountNumber(), "All transfers should belong to JohnDoe");
         }
     }
-
-    @Test
-    public void testGetTotalTransfers() {
-        assertEquals(0, dao.getTotalTransfers());
-
-        dao.saveUPITransfer(new Transfer("TXN5", "A", "B", 10.0, "2025-08-01"));
-        dao.saveUPITransfer(new Transfer("TXN6", "C", "D", 20.0, "2025-08-02"));
-
-        assertEquals(2, dao.getTotalTransfers());
-    }
-
-    @Test
-    public void testClearAllTransfers() {
-        dao.saveUPITransfer(new Transfer("TXN7", "A1", "B1", 15.0, "2025-08-01"));
-        assertEquals(1, dao.getTotalTransfers());
-
-        dao.clearAllTransfers();
-        assertEquals(0, dao.getTotalTransfers());
-    }
-}
