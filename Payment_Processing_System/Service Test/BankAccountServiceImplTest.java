@@ -72,7 +72,7 @@ public class BankingServiceImplTest {
         double initialBalance = acc.getBalance();
 
         if (initialBalance < 2000) {
-            System.out.println("💡 Cannot withdraw more than balance: skipping update.");
+            System.out.println("Cannot withdraw more than balance: skipping update.");
         } else {
             acc.setBalance(initialBalance - 2000);
             service.updateAccount(acc);
