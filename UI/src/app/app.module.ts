@@ -3,9 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { UpiTransferComponent } from './upi-transfer/upi-transfer.component';
 
 @NgModule({
-  declarations: [], // This array should be empty or contain other non-standalone components
+  declarations: [
+    UpiTransferComponent
+  ], // This array should be empty or contain other non-standalone components
   imports: [
     BrowserModule,
     AppRoutingModule,
