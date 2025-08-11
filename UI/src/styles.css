@@ -1,10 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-  --brown-lightest: #f5f1eb;    /* very light cream */
-  --brown-light:    #e0c097;    /* your nice beige outer */
-  --brown-base:     #a67b5b;    /* button color */
-  --brown-dark:     #5b3c1f;
-  --brown-darker:   #3e2618;
+  --purple-lightest: #c7ade6;   /* very light cream */
+  --purple-light:    #7c1ee7;    /* your nice beige outer */
+  --purple-base:     #47365c;    /* button color */
+  --purple-dark:     #472e66dc;
+  --purple-darker:   #300e57dc;
 }
 
 *,
@@ -21,13 +21,13 @@ html, body, app-root {
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: var(--brown-light);  /* beige outer background */
-  color: var(--brown-darker);
+  background-color: var(--purple-light);  /* beige outer background */
+  color: var(--purple-darker);
 }
 
 app-root {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--brown-light);
+  background-color: var(--purple-light);
 }
