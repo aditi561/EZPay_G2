@@ -1,0 +1,70 @@
+<div class="container">
+  <div class="card">
+    <h2>Bank Transfer</h2>
+    <form>
+      <div class="form-container">
+      <div class="form-col">
+        <div class="form-input">
+
+          <label>Recipient Account Number</label>
+          <input
+            type="text"
+            [(ngModel)]="accountNumber"
+            placeholder="e.g., 1234567890"
+          />
+        </div>
+        <div class="form-input">
+
+          <label>Recipient Name</label>
+          <input
+            type="text"
+            [(ngModel)]="recipientName"
+            placeholder="e.g., John Doe"
+          />
+        </div>
+        <div class="form-input">
+
+          <label>Amount</label>
+          <input type="number" [(ngModel)]="amount" placeholder="e.g., 1000.00" />
+        </div>
+        
+        
+      </div>
+      <div class="form-col">
+        <div class="form-input">
+
+          <label>Confirm Account Number</label>
+          <input type="text" [(ngModel)] = "confirmAccountNumber" placeholder="Re-enter account number" />
+    
+        </div>
+        <div class="form-input">
+
+          <label>IFSC Code</label>
+          <input
+            type="text"
+            [(ngModel)]="ifscCode"
+            placeholder="e.g., ABCD0001234"
+          />
+        </div>
+
+
+        
+  
+  <div class="form-input">
+
+    <label>Remarks (Optional)</label>
+    <input
+      type="text"
+      [(ngModel)]="remarks"
+      placeholder="e.g., Monthly rent"
+    />
+  </div>
+      </div>
+
+      </div>
+      <button type="submit" routerLink="/enter-pin">
+        PROCEED TO PAY
+      </button>
+    </form>
+  </div>
+</div>

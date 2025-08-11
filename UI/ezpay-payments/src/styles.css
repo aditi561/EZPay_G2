@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+  --purple-lightest: #c7ade6;   
+  --purple-light:    #7c1ee7;    
+  --purple-base:     #49298b;    
+  --purple-dark:     #472e66dc;
+  --purple-darker:   #300e57dc;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, app-root {
+  height: 100%;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--purple-light);  
+  color: var(--purple-darker);
+}
+
+app-root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--purple-base);
+}

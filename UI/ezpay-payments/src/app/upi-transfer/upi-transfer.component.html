@@ -1,0 +1,16 @@
+<div class="upi-transfer-container">
+  <div class="upi-transfer-box">
+    <h2>UPI Transfer</h2>
+      <label>Recipient UPI ID</label>
+      <input type="text" [(ngModel)] = "upiId" placeholder="e.g., example@bankname" />
+
+      <label>Amount</label>
+      <input type="number" [(ngModel)] = "amount"  placeholder="e.g., 500.00" />
+
+      <label>Remarks (Optional)</label>
+      <input type="text" [(ngModel)] = "remarks"  placeholder="e.g., For groceries" />
+
+      <label></label>
+      <input class="submit" type="submit" routerLink="/enter-pin" value = 'PROCEED TO PAY' />
+  </div>
+</div>
