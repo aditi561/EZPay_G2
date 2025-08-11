@@ -7,7 +7,7 @@ describe('TransactionStatusSuccessComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TransactionStatusSuccessComponent]
+      declarations: [TransactionStatusSuccessComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(TransactionStatusSuccessComponent);
