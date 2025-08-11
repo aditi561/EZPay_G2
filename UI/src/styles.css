@@ -1,8 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-  --purple-lightest: #c7ade6;   /* very light cream */
-  --purple-light:    #7c1ee7;    /* your nice beige outer */
-  --purple-base:     #47365c;    /* button color */
+  --purple-lightest: #c7ade6;   
+  --purple-light:    #7c1ee7;    
+  --purple-base:     #47365c;    
   --purple-dark:     #472e66dc;
   --purple-darker:   #300e57dc;
 }
