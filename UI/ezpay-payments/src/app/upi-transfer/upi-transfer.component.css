@@ -34,6 +34,12 @@ html {
     font-weight: bold;
 }
 
+small{
+    color:red;
+    font-size: 12px;
+    font-weight: bold;
+}
+
 .upi-transfer-box label {
     color: #fff;
     margin-top: 12px;

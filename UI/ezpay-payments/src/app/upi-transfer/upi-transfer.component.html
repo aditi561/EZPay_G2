@@ -1,16 +1,25 @@
 <div class="upi-transfer-container">
   <div class="upi-transfer-box">
     <h2>UPI Transfer</h2>
+    <form #upiForm="ngForm" >
       <label>Recipient UPI ID</label>
-      <input type="text" [(ngModel)] = "upiId" placeholder="e.g., example@bankname" />
+      <input type="text" name="upiId" ngModel #upiId ="ngModel" pattern="[a-z0-9]{2,50}@[a-z]{2,20}" required placeholder="e.g., example@bankname" />
+      <div *ngIf="upiId.touched" class="error">
+        <small color = "red" *ngIf="upiId.errors?.['required']" >UPI ID is required.</small>
+        <small *ngIf="upiId.errors?.['pattern']">Invalid UPI ID format.</small>
+      </div>
 
       <label>Amount</label>
-      <input type="number" [(ngModel)] = "amount"  placeholder="e.g., 500.00" />
+      <input type="number" name = "upiAmount" ngModel #upiAmount = "ngModel" required  placeholder="e.g., 500.00" />
+      <div *ngIf="upiAmount.touched" class="error">
+        <small color = "red" *ngIf="upiAmount.errors?.['required']" >Amount is required.</small>
+      </div>
 
       <label>Remarks (Optional)</label>
-      <input type="text" [(ngModel)] = "remarks"  placeholder="e.g., For groceries" />
+      <input type="text" ngModel name = "upiRemarks"  placeholder="e.g., For groceries" />
 
       <label></label>
-      <input class="submit" type="submit" routerLink="/enter-pin" value = 'PROCEED TO PAY' />
+      <button class="submit" type="submit" routerLink="/enter-pin">Proceed to Pay </button>
+      </form>
   </div>
 </div>
