@@ -1,70 +1,61 @@
 <div class="container">
   <div class="card">
     <h2>Bank Transfer</h2>
-    <form>
-      <div class="form-container">
-      <div class="form-col">
-        <div class="form-input">
 
-          <label>Recipient Account Number</label>
-          <input
-            type="text"
-            [(ngModel)]="accountNumber"
-            placeholder="e.g., 1234567890"
-          />
+    <form [formGroup]="bankTransferForm" (ngSubmit)="onSubmit()" class="form-grid">
+
+      <div class="form-group">
+        <label>Recipient Account Number:</label>
+        <input type="text" formControlName="recipientAccount">
+        <div *ngIf="f['recipientAccount'].touched && f['recipientAccount'].invalid" class="error">
+          <small *ngIf="f['recipientAccount'].errors?.['required']">Required</small>
+          <small *ngIf="f['recipientAccount'].errors?.['pattern']">Invalid account number</small>
         </div>
-        <div class="form-input">
-
-          <label>Recipient Name</label>
-          <input
-            type="text"
-            [(ngModel)]="recipientName"
-            placeholder="e.g., John Doe"
-          />
-        </div>
-        <div class="form-input">
-
-          <label>Amount</label>
-          <input type="number" [(ngModel)]="amount" placeholder="e.g., 1000.00" />
-        </div>
-        
-        
-      </div>
-      <div class="form-col">
-        <div class="form-input">
-
-          <label>Confirm Account Number</label>
-          <input type="text" [(ngModel)] = "confirmAccountNumber" placeholder="Re-enter account number" />
-    
-        </div>
-        <div class="form-input">
-
-          <label>IFSC Code</label>
-          <input
-            type="text"
-            [(ngModel)]="ifscCode"
-            placeholder="e.g., ABCD0001234"
-          />
-        </div>
-
-
-        
-  
-  <div class="form-input">
-
-    <label>Remarks (Optional)</label>
-    <input
-      type="text"
-      [(ngModel)]="remarks"
-      placeholder="e.g., Monthly rent"
-    />
-  </div>
       </div>
 
+      <div class="form-group">
+        <label>Confirm Account Number: </label>
+        <input type="text" formControlName="confirmAccount">
+        <div *ngIf="bankTransferForm.errors?.['accountsMismatch'] && f['confirmAccount'].touched" class="error">
+          <small>Accounts do not match</small>
+        </div>
       </div>
-      <button type="submit" routerLink="/enter-pin">
-        PROCEED TO PAY
-      </button>
+
+      <div class="form-group">
+        <label>IFSC Code: </label>
+        <input type="text" formControlName="ifscCode">
+        <div *ngIf="f['ifscCode'].touched && f['ifscCode'].invalid" class="error">
+          <small *ngIf="f['ifscCode'].errors?.['required']">Required</small>
+          <small *ngIf="f['ifscCode'].errors?.['pattern']">Invalid IFSC code</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Recipient Name: </label>
+        <input type="text" formControlName="recipientName">
+        <div *ngIf="f['recipientName'].touched && f['recipientName'].invalid" class="error">
+          <small>Required</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Amount: </label>
+        <input type="number" formControlName="amount">
+        <div *ngIf="f['amount'].touched && f['amount'].invalid" class="error">
+          <small *ngIf="f['amount'].errors?.['required']">Required</small>
+          <small *ngIf="f['amount'].errors?.['min']">Must be greater than 0</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Remarks (Optional): </label>
+        <input type="text" formControlName="remarks">
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="bankTransferForm.invalid">PROCEED TO PAY</button>
+      </div>
+
     </form>
   </div>
 </div>
