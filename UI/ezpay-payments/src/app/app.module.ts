@@ -9,6 +9,7 @@ import { PinEntryComponent } from './pin-entry/pin-entry.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { TransactionStatusFailureComponent } from './transaction-status/transaction-status-failure.component';
 import { TransactionStatusSuccessComponent } from './transaction-status/transaction-status-success.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,9 @@ import { TransactionStatusSuccessComponent } from './transaction-status/transact
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule// Import AppComponent here because it is a standalone component
+    FormsModule,
+    ReactiveFormsModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
