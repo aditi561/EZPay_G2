@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-transaction-status-pending',
@@ -9,8 +10,10 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./transaction-status-pending.component.css']
 })
 export class TransactionStatusPendingComponent implements OnInit, OnDestroy {
-  timeRemaining = 60; // 1 minute in seconds
+  timeRemaining = 60; // 1 minute
   private timerInterval: any;
+
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.startTimer();
@@ -28,6 +31,7 @@ export class TransactionStatusPendingComponent implements OnInit, OnDestroy {
         this.timeRemaining--;
       } else {
         clearInterval(this.timerInterval);
+        this.router.navigate(['/']); // auto-redirect to homepage
       }
     }, 1000);
   }
@@ -47,6 +51,6 @@ export class TransactionStatusPendingComponent implements OnInit, OnDestroy {
   }
 
   onGoHome() {
-    console.log('Go to home clicked');
+    this.router.navigate(['/']); // manual redirect via button
   }
 }
