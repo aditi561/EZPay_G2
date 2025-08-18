@@ -6,6 +6,7 @@ import { BankTransferComponent } from './bank-transfer/bank-transfer.component';
 import { PinEntryComponent } from './pin-entry/pin-entry.component';
 import { TransactionStatusSuccessComponent } from './transaction-status/transaction-status-success.component';
 import { TransactionStatusFailureComponent } from './transaction-status/transaction-status-failure.component';
+import { TransactionStatusPendingComponent } from './transaction-status/transaction-status-pending.component';
 import { TransactionHistoryComponent } from './transaction-history/transaction-history.component';
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'enter-pin' , component: PinEntryComponent},
   { path: 'transaction-status/success', component: TransactionStatusSuccessComponent},
   { path: 'transaction-status/failure', component: TransactionStatusFailureComponent},
+  { path: 'transaction-status/pending', component: TransactionStatusPendingComponent },
   { path: 'transaction-history', component: TransactionHistoryComponent }
 ];
 
