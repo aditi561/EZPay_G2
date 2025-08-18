@@ -12,6 +12,9 @@ import { TransactionStatusSuccessComponent } from './transaction-status/transact
 import { TransactionHistoryComponent } from './transaction-history/transaction-history.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BankTransactionHistoryComponent } from './bank-transaction-history/bank-transaction-history.component';
+import { BankTransactionStatusSuccessComponent } from './bank-transaction-status/bank-transaction-status-success/bank-transaction-status-success.component';
+import { BankTransactionStatusFailureComponent } from './bank-transaction-status/bank-transaction-status-failure/bank-transaction-status-failure.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     TransactionStatusSuccessComponent,
     TransactionHistoryComponent,
     NavbarComponent,
-    AppComponent
+    AppComponent,
+    BankTransactionHistoryComponent,
+    BankTransactionStatusSuccessComponent,
+    BankTransactionStatusFailureComponent
   ], // This array should be empty or contain other non-standalone components
   imports: [
     BrowserModule,
