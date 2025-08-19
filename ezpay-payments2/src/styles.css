@@ -1,10 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-  --purple-lightest: #c7ade6;   
-  --purple-light:    #7c1ee7;    
-  --purple-base:     #49298b;    
-  --purple-dark:     #472e66dc;
-  --purple-darker:   #300e57dc;
+  --purple-lightest: #E6D7F7;
+  --purple-light:    #9B59B6;
+  --purple-base:     #8E44AD;
+  --purple-dark:     #6C3483;
+  --purple-darker:   #512E5F;
 }
 
 *,
@@ -21,7 +21,7 @@ html, body, app-root {
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: var(--purple-light);  
+  background-color: #F4ECF7;
   color: var(--purple-darker);
 }
 
@@ -29,5 +29,5 @@ app-root {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--purple-base);
+  background-color: #F4ECF7;
 }
