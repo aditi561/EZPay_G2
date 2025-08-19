@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component , OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-bank-transfer',
@@ -6,26 +7,39 @@ import { Component } from '@angular/core';
   templateUrl: './bank-transfer.component.html',
   styleUrls: ['./bank-transfer.component.css']
 })
-export class BankTransferComponent {
-  accountNumber: string = '';
-  ifscCode: string = '';
-  amount: number = 0;
-  remarks: string = '';
-  recipientName: string = '';
-  confirmAccountNumber: string = '';
+export class BankTransferComponent implements OnInit {
 
-  submitTransfer(): void {
-    if (!this.accountNumber || !this.ifscCode || this.amount <= 0 || !this.recipientName) {
-      alert('Please fill in all fields correctly.');
-      return;
+  bankTransferForm!: FormGroup;
+
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.bankTransferForm = this.fb.group({
+      recipientAccount: ['', [Validators.required, Validators.pattern(/^\d{10,18}$/)]],
+      confirmAccount: ['', [Validators.required]],
+      ifscCode: ['', [Validators.required, Validators.pattern(/^[A-Z]{4}0[A-Z0-9]{6}$/)]],
+      recipientName: ['', Validators.required],
+      amount: ['', [Validators.required, Validators.min(1)]],
+      remarks: ['']
+    }, { validators: this.accountMatchValidator });
+  }
+
+  accountMatchValidator(group: FormGroup) {
+    const acc = group.get('recipientAccount')?.value;
+    const confirmAcc = group.get('confirmAccount')?.value;
+    return acc === confirmAcc ? null : { accountsMismatch: true };
+  }
+
+  onSubmit(): void {
+    if (this.bankTransferForm.valid) {
+      console.log(this.bankTransferForm.value);
+      alert('Payment initiated!');
+    } else {
+      this.bankTransferForm.markAllAsTouched();
     }
-    // Here you can call an API to process the bank transfer
-    alert(`Bank transfer initiated for ${this.amount} to ${this.recipientName}.`);
-    // Reset form fields after submission
-    this.accountNumber = '';
-    this.ifscCode = '';
-    this.amount = 0;
-    this.remarks = '';
-    this.recipientName = '';
+  }
+
+  get f() {
+    return this.bankTransferForm.controls;
   }
 }
