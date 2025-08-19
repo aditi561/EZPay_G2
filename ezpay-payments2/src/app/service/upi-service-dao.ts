@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { UpiTransaction } from '../models/upi-transaction.model';
+import { UpiTransaction } from '../model/upi-transaction.model';
 
 export interface UpiServiceDAO {
   // Create a new UPI transaction

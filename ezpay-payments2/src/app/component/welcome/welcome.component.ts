@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router'; // Import RouterLink for navigation
 
 @Component({
   selector: 'app-welcome',

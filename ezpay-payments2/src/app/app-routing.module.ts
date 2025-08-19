@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { WelcomeComponent } from './components/welcome/welcome.component';
-import { UpiTransferComponent } from './components/upi-transfer/upi-transfer.component';
-import { BankTransferComponent } from './components/bank-transfer/bank-transfer.component';
-import { PinEntryComponent } from './components/pin-entry/pin-entry.component';
-import { TransactionStatusSuccessComponent } from './components/transaction-status/transaction-status-success.component';
-import { TransactionStatusFailureComponent } from './components/transaction-status/transaction-status-failure.component';
-import { TransactionHistoryComponent } from './components/transaction-history/transaction-history.component';
-import { BankTransactionHistoryComponent } from './components/bank-transaction-history/bank-transaction-history.component';
-import { BankTransactionStatusSuccessComponent} from './components/bank-transaction-status-success/bank-transaction-status-success.component';
-import { BankTransactionStatusFailureComponent } from './components/bank-transaction-status-failure/bank-transaction-status-failure.component';
+import { WelcomeComponent } from './component/welcome/welcome.component';
+import { UpiTransferComponent } from './component/upi-transfer/upi-transfer.component';
+import { BankTransferComponent } from './component/bank-transfer/bank-transfer.component';
+import { PinEntryComponent } from './component/pin-entry/pin-entry.component';
+import { TransactionStatusSuccessComponent } from './component/transaction-status/transaction-status-success.component';
+import { TransactionStatusFailureComponent } from './component/transaction-status/transaction-status-failure.component';
+import { TransactionHistoryComponent } from './component/transaction-history/transaction-history.component';
+import { BankTransactionHistoryComponent } from './component/bank-transaction-history/bank-transaction-history.component';
+import { BankTransactionStatusSuccessComponent} from './component/bank-transaction-status-success/bank-transaction-status-success.component';
+import { BankTransactionStatusFailureComponent } from './component/bank-transaction-status-failure/bank-transaction-status-failure.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },

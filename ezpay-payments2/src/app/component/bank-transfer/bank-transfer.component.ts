@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BankServiceImpl } from '../../services/bank-services-imp.service';
-import { BankTransaction } from '../../models/bank-transaction.model';
+import { BankServiceImpl } from '../../service/bank-service-imp.service';
+import { BankTransaction } from '../../model/bank-transaction.model';
 
 @Component({
   selector: 'app-bank-transfer',

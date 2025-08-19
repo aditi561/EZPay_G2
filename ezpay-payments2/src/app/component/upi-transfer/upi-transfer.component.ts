@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UpiServiceImpl } from '../../services/upi-service-impl.service';
-import { UpiTransaction } from '../../models/upi-transaction.model';
+import { UpiServiceImpl } from '../../service/upi-service-impl.service';
+import { UpiTransaction } from '../../model/upi-transaction.model';
 
 /**
  * UPI Transfer Component

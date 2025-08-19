@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { UpiTransaction } from '../models/upi-transaction.model';
+import { UpiTransaction } from '../model/upi-transaction.model';
 import { UpiServiceDAO } from './upi-service-dao';
 
 @Injectable({
