@@ -4,6 +4,15 @@ import { Router } from '@angular/router';
 import { BankServiceImpl } from '../../service/bank-service-imp.service';
 import { BankTransaction } from '../../model/bank-transaction.model';
 
+/**
+ * BankTransferComponent
+ * ---------------------
+ * This component handles the Bank Transfer feature of the application.
+ * It provides a form to initiate a transfer, validates inputs,
+ * shows recent transactions, and redirects the user to the PIN entry screen.
+ * 
+ * Author: Aditi Roy
+ */
 @Component({
   selector: 'app-bank-transfer',
   templateUrl: './bank-transfer.component.html',
@@ -12,8 +21,13 @@ import { BankTransaction } from '../../model/bank-transaction.model';
 })
 export class BankTransferComponent implements OnInit {
 
+  /** Reactive form for bank transfer */
   bankTransferForm!: FormGroup;
+
+  /** Flag to indicate loading state during transaction submission */
   isLoading: boolean = false;
+
+  /** Stores recent transactions (last 5) for quick display */
   recentTransactions: BankTransaction[] = [];
 
   constructor(
@@ -22,6 +36,7 @@ export class BankTransferComponent implements OnInit {
     private router: Router
   ) {}
 
+  /** Initialize form and load recent transactions */
   ngOnInit(): void {
     this.bankTransferForm = this.fb.group({
       recipientAccount: ['', [Validators.required, Validators.pattern(/^\d{10,18}$/)]],
@@ -35,18 +50,25 @@ export class BankTransferComponent implements OnInit {
     this.loadRecentTransactions();
   }
 
-  /** Validator to ensure recipientAccount and confirmAccount match */
+  /**
+   * Custom validator to ensure recipientAccount and confirmAccount fields match
+   * @param group - FormGroup containing the form controls
+   */
   accountMatchValidator(group: FormGroup) {
     const acc = group.get('recipientAccount')?.value;
     const confirmAcc = group.get('confirmAccount')?.value;
     return acc === confirmAcc ? null : { accountsMismatch: true };
   }
 
-  /** Initiate bank transaction and navigate to PIN entry */
+  /**
+   * Initiates a bank transfer transaction by calling service
+   * On success → navigates to PIN entry screen with transaction ID
+   * On failure → shows an alert
+   */
   initiateTransaction(): void {
     if (this.bankTransferForm.valid) {
       const transaction: Omit<BankTransaction, 'id' | 'status' | 'transactionDate'> = {
-        senderAccountNumber: '1234567890', // Replace with logged-in user's account
+        senderAccountNumber: '1234567890', // TODO: Replace with logged-in user's account
         recipientAccountNumber: this.bankTransferForm.value.recipientAccount,
         ifscCode: this.bankTransferForm.value.ifscCode,
         recipientName: this.bankTransferForm.value.recipientName,
@@ -60,7 +82,7 @@ export class BankTransferComponent implements OnInit {
       this.bankService.createTransaction(transaction).subscribe({
         next: (tx: BankTransaction) => {
           this.isLoading = false;
-          // Navigate to PIN entry with transaction ID
+          // Navigate to PIN entry screen with transaction ID & type
           this.router.navigate(['/enter-pin'], {
             queryParams: { transactionId: tx.id, type: 'bank' }
           });
@@ -72,11 +94,14 @@ export class BankTransferComponent implements OnInit {
         }
       });
     } else {
+      // Highlight invalid fields
       this.bankTransferForm.markAllAsTouched();
     }
   }
 
-  /** Load recent transactions (last 5) */
+  /**
+   * Loads the most recent 5 bank transactions
+   */
   loadRecentTransactions(): void {
     this.bankService.getRecentTransactions(5).subscribe({
       next: (txs: BankTransaction[]) => this.recentTransactions = txs,
@@ -84,22 +109,33 @@ export class BankTransferComponent implements OnInit {
     });
   }
 
-  /** Navigate to full transaction history */
+  /**
+   * Navigates to the full bank transaction history screen
+   */
   toggleHistory(): void {
     this.router.navigate(['/bank-transaction-history']);
   }
 
-  /** Get form controls */
+  /**
+   * Utility getter for form controls
+   */
   get f() {
     return this.bankTransferForm.controls;
   }
 
-  /** Format date for display */
+  /**
+   * Utility to format date for UI display
+   * @param date - Transaction date
+   * @returns formatted date string
+   */
   formatDate(date: Date): string {
     return new Date(date).toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' });
   }
 
-  /** Return CSS class based on transaction status */
+  /**
+   * Returns appropriate CSS class based on transaction status
+   * @param status - SUCCESS | FAILED | PENDING
+   */
   getStatusClass(status: 'SUCCESS' | 'FAILED' | 'PENDING'): string {
     switch (status) {
       case 'SUCCESS': return 'badge-success';
