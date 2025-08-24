@@ -1,0 +1,16 @@
+<div class="pin-entry-container">
+  <div class="pin-entry-box">
+    <h2>Enter PIN</h2>
+    <label for="pin">Enter your 4-digit PIN</label>
+    <input type="password"
+           id="pin"
+           [(ngModel)]="pin"
+           maxlength="4"
+           placeholder="••••"
+           inputmode="numeric" />
+
+    <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+    <input class="submit" type="submit" (click)="verifyPin()" value="VERIFY PIN" />
+  </div>
+</div>

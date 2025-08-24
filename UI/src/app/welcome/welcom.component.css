@@ -1,0 +1,200 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  color: #333;
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 1.2em;
+  margin-bottom: 40px;
+}
+
+.options-container {
+  display: flex;
+  gap: 20px;
+}
+
+.option-button {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 250px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.option-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  border-color: #007bff;
+}
+
+.option-button span {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #555;
+}
+
+.icon {
+  width: 80px;
+  height: 80px;
+  background-color: #007bff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 2em;
+}
+
+.welcome-container {
+  background: var(--purple-lightest);  /* lighter card */
+  padding: 3rem 4rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+}
+
+.welcome-container h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 2.5rem;
+  color: var(--purple-darker);
+  margin-bottom: 0.5rem;
+}
+
+.welcome-container .welcome-desc {
+  font-family: 'Lora', serif;
+  font-weight: 400;
+  font-size: 1rem;
+  color: var(--purple-dark);
+  margin: 1rem 0 1.5rem;
+}
+
+.welcome-container p {
+  font-family: 'Lora', serif;
+  color: var(--purple-darker);
+  margin-bottom: 1rem;
+}
+
+.welcome-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.welcome-container a {
+  display: block;
+  width: 220px;                      
+  padding: 0.75rem 0;
+  background-color: var(--purple-base);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-family: 'Lora', serif;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+
+.welcome-container a:hover {
+  background-color: var(--purple-dark);body {
+    background: linear-gradient(135deg, #6c5be7, #4b38d3);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.welcome-container {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 3rem 4rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+    color: #fff;
+}
+
+.welcome-container h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.welcome-container .welcome-desc {
+    font-family: 'Lora', serif;
+    font-weight: 400;
+    font-size: 1rem;
+    color: #f0f0f0;
+    margin: 1rem 0 1.5rem;
+}
+
+.welcome-container p {
+    font-family: 'Lora', serif;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.welcome-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.welcome-container a {
+    display: block;
+    width: 220px;
+    padding: 0.75rem 0;
+    background-color: #fff;
+    color: #4b38d3;
+    text-decoration: none;
+    border-radius: 8px;
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    text-align: center;
+}
+
+.welcome-container a:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+}
+}
