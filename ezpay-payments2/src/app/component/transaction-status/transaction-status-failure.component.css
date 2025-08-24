@@ -74,6 +74,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-inline: -20px;   /* cancels .screen padding */
+  padding-inline: 20px;   /* keep the visual gutter inside */
 }
 
 .card {
@@ -83,6 +85,7 @@
   text-align: center;
   width: 100%;
   max-width: 450px;
+  box-sizing: border-box;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
 }
 

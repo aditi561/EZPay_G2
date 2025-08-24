@@ -4,6 +4,17 @@ import { Router } from '@angular/router';
 import { BankServiceImpl } from '../../service/bank-service-imp.service';
 import { BankTransaction } from '../../model/bank-transaction.model';
 
+/**
+ * BankTransferComponent
+ * ---------------------
+ * Handles bank transfer operations including:
+ * - Input validation via reactive forms
+ * - Initiating bank transfers
+ * - Displaying recent and full transaction history
+ * - Navigation to PIN entry for authentication
+ * 
+ * Author: Aditi Roy
+ */
 @Component({
   selector: 'app-bank-transfer',
   templateUrl: './bank-transfer.component.html',
@@ -12,16 +23,40 @@ import { BankTransaction } from '../../model/bank-transaction.model';
 })
 export class BankTransferComponent implements OnInit {
 
+  /** Recipient bank ID (format: username@bankname) */
+  bankId: string;
+
+  /** Transaction amount in INR (must be > 0) */
+  amount: number;
+
+  /** Reactive form for capturing bank transfer inputs */
   bankTransferForm!: FormGroup;
+
+  /** Loading indicator for async operations */
   isLoading: boolean = false;
+
+  /** Stores all transactions for history view */
+  transactionHistory: BankTransaction[] = [];
+
+  /** Stores the last 5 recent transactions */
   recentTransactions: BankTransaction[] = [];
+
+  /** Controls visibility of transaction history */
+  showHistory: boolean = false;
+
+  /** Selected filter for transaction history ('all' | 'SUCCESS' | 'FAILED' | 'PENDING') */
+  selectedFilter: string = 'all';
 
   constructor(
     private fb: FormBuilder,
     private bankService: BankServiceImpl,
     private router: Router
-  ) {}
+  ) {
+    this.bankId = '';
+    this.amount = 0;
+  }
 
+  /** Initializes form with validators and loads recent and all transactions */
   ngOnInit(): void {
     this.bankTransferForm = this.fb.group({
       recipientAccount: ['', [Validators.required, Validators.pattern(/^\d{10,18}$/)]],
@@ -32,21 +67,60 @@ export class BankTransferComponent implements OnInit {
       remarks: ['']
     }, { validators: this.accountMatchValidator });
 
+    this.loadBankTransactionHistory();
     this.loadRecentTransactions();
   }
 
-  /** Validator to ensure recipientAccount and confirmAccount match */
+  /**
+   * Loads complete bank transaction history from the service
+   * Updates transactionHistory array and manages loading state
+   */
+  loadBankTransactionHistory(): void {
+    this.isLoading = true;
+    this.bankService.getAllTransactions().subscribe({
+      next: (transactions) => {
+        this.transactionHistory = transactions;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading bank transactions:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  /**
+   * Loads the last 5 recent bank transactions
+   */
+  loadRecentTransactions(): void {
+    this.bankService.getRecentTransactions(5).subscribe({
+      next: (txs: BankTransaction[]) => this.recentTransactions = txs,
+      error: (err: any) => console.error('Error loading recent transactions:', err)
+    });
+  }
+
+  /**
+   * Custom validator to ensure recipient account matches confirm account
+   * @param group FormGroup containing account fields
+   * @returns null if match, { accountsMismatch: true } if mismatch
+   */
   accountMatchValidator(group: FormGroup) {
     const acc = group.get('recipientAccount')?.value;
     const confirmAcc = group.get('confirmAccount')?.value;
     return acc === confirmAcc ? null : { accountsMismatch: true };
   }
 
-  /** Initiate bank transaction and navigate to PIN entry */
+  /**
+   * Initiates a bank transaction
+   * - Creates a transaction object
+   * - Calls bank service to process the transaction
+   * - On success, navigates to PIN entry page
+   * - On error, shows an alert and logs error
+   */
   initiateTransaction(): void {
     if (this.bankTransferForm.valid) {
       const transaction: Omit<BankTransaction, 'id' | 'status' | 'transactionDate'> = {
-        senderAccountNumber: '1234567890', // Replace with logged-in user's account
+        senderAccountNumber: '1234567890', // TODO: replace with logged-in user's account
         recipientAccountNumber: this.bankTransferForm.value.recipientAccount,
         ifscCode: this.bankTransferForm.value.ifscCode,
         recipientName: this.bankTransferForm.value.recipientName,
@@ -60,7 +134,6 @@ export class BankTransferComponent implements OnInit {
       this.bankService.createTransaction(transaction).subscribe({
         next: (tx: BankTransaction) => {
           this.isLoading = false;
-          // Navigate to PIN entry with transaction ID
           this.router.navigate(['/enter-pin'], {
             queryParams: { transactionId: tx.id, type: 'bank' }
           });
@@ -76,30 +149,30 @@ export class BankTransferComponent implements OnInit {
     }
   }
 
-  /** Load recent transactions (last 5) */
-  loadRecentTransactions(): void {
-    this.bankService.getRecentTransactions(5).subscribe({
-      next: (txs: BankTransaction[]) => this.recentTransactions = txs,
-      error: (err: any) => console.error('Error loading recent transactions:', err)
-    });
-  }
-
-  /** Navigate to full transaction history */
+  /** Navigate to the full transaction history page */
   toggleHistory(): void {
     this.router.navigate(['/bank-transaction-history']);
   }
 
-  /** Get form controls */
+  /** Returns form controls for template access */
   get f() {
     return this.bankTransferForm.controls;
   }
 
-  /** Format date for display */
+  /**
+   * Formats transaction date into human-readable string
+   * @param date Date object
+   * @returns formatted string (en-IN)
+   */
   formatDate(date: Date): string {
     return new Date(date).toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' });
   }
 
-  /** Return CSS class based on transaction status */
+  /**
+   * Returns CSS class for transaction status badges
+   * @param status SUCCESS | FAILED | PENDING
+   * @returns corresponding CSS class string
+   */
   getStatusClass(status: 'SUCCESS' | 'FAILED' | 'PENDING'): string {
     switch (status) {
       case 'SUCCESS': return 'badge-success';

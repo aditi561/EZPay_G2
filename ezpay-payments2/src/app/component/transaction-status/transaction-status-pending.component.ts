@@ -42,9 +42,9 @@ export class TransactionStatusPendingComponent implements OnInit, OnDestroy {
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   }
 
-  onBack() {
-    console.log('Back clicked');
-  }
+  // onBack() {
+  //   console.log('Back clicked');
+  // }
 
   onCheckStatus() {
     console.log('Check status clicked');

@@ -1,0 +1,81 @@
+<!-- add-beneficiary.component.html -->
+<div class="beneficiary-container">
+  <h2>Add Beneficiary</h2>
+
+  <form (ngSubmit)="submitForm()" #beneficiaryForm="ngForm">
+    <div class="form-group">
+      <label for="name">Beneficiary Name:</label>
+      <input
+        type="text"
+        id="name"
+        [(ngModel)]="beneficiary.name"
+        name="name"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="accountNumber">Account Number:</label>
+      <input
+        type="text"
+        id="accountNumber"
+        [(ngModel)]="beneficiary.accountNumber"
+        name="accountNumber"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="bankName">Bank Name:</label>
+      <input
+        type="text"
+        id="bankName"
+        [(ngModel)]="beneficiary.bankName"
+        name="bankName"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="ifscCode">IFSC Code:</label>
+      <input
+        type="text"
+        id="ifscCode"
+        [(ngModel)]="beneficiary.ifscCode"
+        name="ifscCode"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email (Optional):</label>
+      <input
+        type="email"
+        id="email"
+        [(ngModel)]="beneficiary.email"
+        name="email"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Phone (Optional):</label>
+      <input
+        type="text"
+        id="phone"
+        [(ngModel)]="beneficiary.phone"
+        name="phone"
+      />
+    </div>
+
+    <button type="submit" class="btn-submit">Add Beneficiary</button>
+  </form>
+
+  <div *ngIf="beneficiaries.length > 0" class="beneficiary-list">
+    <h3>Saved Beneficiaries</h3>
+    <ul>
+      <li *ngFor="let b of beneficiaries">
+        <strong>{{ b.name }}</strong> - {{ b.accountNumber }} ({{ b.bankName }})
+      </li>
+    </ul>
+  </div>
+</div>

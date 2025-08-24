@@ -1,9 +1,24 @@
+<<<<<<< HEAD
+=======
+/* ==========================================================
+   Bank Transfer Component Stylesheet
+   ----------------------------------
+   This file defines the UI styles for the Bank Transfer page,
+   including navigation, forms, transaction history, and 
+   responsive adjustments.
+   
+   Author: Aditi Roy
+   ========================================================== */
+
+/* Global Font */
+>>>>>>> 08f811ae7bae73a5df03b37d3f67bb67f3d5cd2f
 * {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body,
 html {
+<<<<<<< HEAD
     height: 100%;
     margin: 0;
     padding: 0;
@@ -268,6 +283,20 @@ html {
 }
 
 /* Navigation Bar Styles */
+=======
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* ==================== Headings ==================== */
+h2 {
+  color: white;
+  text-align: center;
+}
+
+/* ==================== Navigation Bar ==================== */
+>>>>>>> 08f811ae7bae73a5df03b37d3f67bb67f3d5cd2f
 .navbar {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -329,6 +358,7 @@ html {
   color: white;
 }
 
+<<<<<<< HEAD
 .content-wrapper {
     max-width: 1200px;
     margin: 0 auto;
@@ -365,6 +395,158 @@ small{
 }
 
 /* Button Group */
+=======
+/* ==================== Page Layout ==================== */
+.bank-transfer-container {
+  min-height: calc(100vh - 60px);
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; 
+}
+
+.content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: justify;
+  gap: 30px;
+  align-items: center;
+}
+
+/* ==================== Bank Transfer Box ==================== */
+.bank-transfer-box {
+  background: #6236a7;
+  padding: 30px 28px;
+  border-radius: 18px;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.18);
+  width: 100%;
+  max-width: 600px;   /* keeps it clean, not too wide */
+  display: flex;
+  flex-direction: column; /* stack everything */
+  gap: 15px; /* spacing between fields */
+}
+
+.bank-transfer-box label {
+  color: #fff;
+  margin-top: 12px;
+  margin-bottom: 4px;
+  font-size: 14px;
+  align-self: flex-start;
+}
+
+.bank-transfer-box input[type="text"], 
+.upi-transfer-box input[type="number"] {
+  background: #513189;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  padding: 9px 14px;
+  font-size: 15px;
+  width: 100%;
+  margin-bottom: 6px;
+  outline: none;
+}
+
+/* ==================== Form Elements ==================== */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form-group input {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  width: 100%;
+  background-color: #513189;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+input {
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+input:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+/* ==================== Buttons ==================== */
+button {
+  background: linear-gradient(135deg, #a06ef7 0%, #8a4ef3 100%);
+  color: white;
+  border: none;
+  padding: 14px 40px;
+  border-radius: 25px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(160, 110, 247, 0.4);
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(160, 110, 247, 0.5);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #ccc !important;
+}
+
+.submit {
+  margin-top: 16px;
+  width: 100%;
+  background: #a06ef7;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 15px;
+  padding: 10px 0;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.submit:hover {
+  background: #8a4ef3;
+}
+
+.submit:disabled {
+  background: #b8a3d4 !important;
+}
+
+>>>>>>> 08f811ae7bae73a5df03b37d3f67bb67f3d5cd2f
 .button-group {
   display: flex;
   justify-content: center;
@@ -372,8 +554,29 @@ small{
   width: 100%;
 }
 
+<<<<<<< HEAD
 
 /* Recent Transactions Panel */
+=======
+/* ==================== Error Messages ==================== */
+small {
+  color: red;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.error {
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.error small {
+  display: block;
+  margin-top: 2px;
+}
+
+/* ==================== Recent Transactions Panel ==================== */
+>>>>>>> 08f811ae7bae73a5df03b37d3f67bb67f3d5cd2f
 .recent-transactions-panel {
   background: white;
   padding: 20px;
@@ -470,7 +673,11 @@ small{
   font-size: 16px;
 }
 
+<<<<<<< HEAD
 /* No Transactions State */
+=======
+/* ==================== No Transactions ==================== */
+>>>>>>> 08f811ae7bae73a5df03b37d3f67bb67f3d5cd2f
 .no-transactions {
   text-align: center;
   padding: 40px 20px;
@@ -488,7 +695,11 @@ small{
   color: #999;
 }
 
+<<<<<<< HEAD
 /* Transaction History */
+=======
+/* ==================== Transaction History ==================== */
+>>>>>>> 08f811ae7bae73a5df03b37d3f67bb67f3d5cd2f
 .transaction-history {
   margin-top: 30px;
   background: white;
@@ -506,6 +717,7 @@ small{
   font-weight: bold;
 }
 
+<<<<<<< HEAD
 .history-controls {
   display: flex;
   justify-content: space-between;
@@ -628,6 +840,11 @@ tbody tr:last-child td {
 }
 
 .status-badge {
+=======
+/* ==================== Status Badges ==================== */
+.status-badge,
+.status {
+>>>>>>> 08f811ae7bae73a5df03b37d3f67bb67f3d5cd2f
   padding: 5px 10px;
   border-radius: 20px;
   font-size: 12px;
@@ -661,6 +878,7 @@ tbody tr:last-child td {
   color: #383d41;
 }
 
+<<<<<<< HEAD
 .no-data {
   text-align: center;
   padding: 60px !important;
@@ -680,6 +898,9 @@ tbody tr:last-child td {
 }
 
 /* Responsive Design */
+=======
+/* ==================== Responsive Design ==================== */
+>>>>>>> 08f811ae7bae73a5df03b37d3f67bb67f3d5cd2f
 @media (max-width: 968px) {
   .content-wrapper {
     flex-direction: column;
@@ -756,6 +977,7 @@ tbody tr:last-child td {
     font-size: 14px;
   }
 }
+<<<<<<< HEAD
 
 /* Disable button styling */
 button:disabled {
@@ -828,3 +1050,5 @@ button:disabled {
     margin-bottom: 6px;
     outline: none;
 }
+=======
+>>>>>>> 08f811ae7bae73a5df03b37d3f67bb67f3d5cd2f

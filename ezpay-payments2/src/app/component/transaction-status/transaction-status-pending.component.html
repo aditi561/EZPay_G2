@@ -1,17 +1,4 @@
-<div class="screen">
-  <div class="header">
-    <div class="header-content">
-      <button class="back-btn" (click)="onBack()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="15,18 9,12 15,6"></polyline>
-        </svg>
-        Back
-      </button>
-      <h1 class="page-title">Payment Processing</h1>
-    </div>
-    <h2 class="brand">Ezpay by NatWest</h2>
-  </div>
-  
+<div class="screen">  
   <div class="content">
     <div class="card">
       <div class="icon-container">
@@ -56,38 +43,25 @@
           <span class="notice-title">IMPORTANT</span>
         </div>
         <p class="notice-text">
-          We are continuously checking the status of your payment. We request you to not make multiple payments and wait for a few minutes till the status is updated in the Passbook.
+          We request you not to refresh this page, or make multiple payments <br> Your payment is being processed; this can take up to 1 minute. <br> If the payment fails, the amount (if debited) will be refunded by your bank within 2–3 working days.
         </p>
       </div>
       
       <div class="transaction-details">
         <div class="detail-row">
           <span class="label">From</span>
-          <span class="value">Your Account ****1234</span>
+          <span class="value">john4122&#64;ybl</span>
         </div>
         <div class="detail-row">
           <span class="label">To</span>
-          <span class="value">John Doe</span>
+          <span class="value">musk3290&#64;pthdfc</span>
         </div>
         <div class="detail-row">
           <span class="label">Amount</span>
           <span class="value">£500.00</span>
         </div>
-        <div class="detail-row">
-          <span class="label">Status</span>
-          <span class="value status-pending">Processing</span>
-        </div>
       </div>
-      
-      <div class="info-message">
-        <p>
-          Don't worry, your money is safe. Banks may take upto 3-5 working days to confirm the final status of your payment.
-        </p>
-        <p>
-          In case this payment fails, your bank will automatically refund money to your account.
-        </p>
-      </div>
-      
+
       <div class="buttons">
         <button class="btn btn-primary" (click)="onCheckStatus()">
           CHECK STATUS

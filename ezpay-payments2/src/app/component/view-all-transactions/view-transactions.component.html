@@ -1,0 +1,65 @@
+<!-- Navigation Bar (I have reused same style as bank-transfer) -->
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-brand">
+      <h1>EZPay</h1>
+    </div>
+    <ul class="nav-menu">
+      <li class="nav-item"><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+      <li class="nav-item"><a routerLink="/upi" routerLinkActive="active">UPI Transfer</a></li>
+      <li class="nav-item"><a routerLink="/bank-transfer" routerLinkActive="active">Bank Transfer</a></li>
+      <li class="nav-item"><a routerLink="/transactions" routerLinkActive="active">Transactions</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Transactions Page -->
+<div class="transaction-history">
+  <h3>All Transactions</h3>
+
+  <!-- Controls -->
+  <div class="history-controls">
+    <div class="filter-buttons">
+      <button (click)="filterTransactions('ALL')" [class.active]="activeFilter === 'ALL'">All</button>
+      <button (click)="filterTransactions('CREDIT')" [class.active]="activeFilter === 'CREDIT'">Credits</button>
+      <button (click)="filterTransactions('DEBIT')" [class.active]="activeFilter === 'DEBIT'">Debits</button>
+    </div>
+    <div class="search-box">
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Search by name..." (input)="onSearch()" />
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading">Loading transactions...</div>
+
+  <!-- Transactions Table -->
+  <div class="transaction-table" *ngIf="!isLoading && filteredTransactions.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Recipient</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Type</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tx of filteredTransactions">
+          <td>{{ tx.recipientName }}</td>
+          <td>{{ formatDate(tx.transactionDate) }}</td>
+          <td [class.credit]="tx.transactionType === 'CREDIT'" [class.debit]="tx.transactionType === 'DEBIT'">
+            {{ tx.transactionType === 'CREDIT' ? '+' : '-' }}₹{{ tx.amount }}
+          </td>
+          <td>{{ tx.transactionType }}</td>
+          <td><span class="status-badge" [ngClass]="getStatusClass(tx.status)">{{ tx.status }}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- No Data -->
+  <div *ngIf="!isLoading && filteredTransactions.length === 0" class="no-data">
+    No transactions found.
+  </div>
+</div>
