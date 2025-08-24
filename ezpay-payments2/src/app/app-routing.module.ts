@@ -9,8 +9,6 @@ import { TransactionStatusPendingComponent } from './component/transaction-statu
 import { TransactionStatusFailureComponent } from './component/transaction-status/transaction-status-failure.component';
 import { TransactionHistoryComponent } from './component/transaction-history/transaction-history.component';
 import { BankTransactionHistoryComponent } from './component/bank-transaction-history/bank-transaction-history.component';
-import { BankTransactionStatusSuccessComponent} from './component/bank-transaction-status-success/bank-transaction-status-success.component';
-import { BankTransactionStatusFailureComponent } from './component/bank-transaction-status-failure/bank-transaction-status-failure.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -26,10 +24,6 @@ const routes: Routes = [
   { path: 'transaction-status/success', component: TransactionStatusSuccessComponent },
   { path: 'transaction-status/pending', component: TransactionStatusPendingComponent },
   { path: 'transaction-status/failure', component: TransactionStatusFailureComponent },
-
-  // Bank-specific transaction status
-  { path: 'bank-transaction-status/success', component: BankTransactionStatusSuccessComponent },
-  { path: 'bank-transaction-status/failure', component: BankTransactionStatusFailureComponent },
 
   // History routes
   { path: 'transaction-history', component: TransactionHistoryComponent },
