@@ -1,7 +1,6 @@
 package com.nwg.ezpay.controller;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,18 +9,36 @@ import org.springframework.web.bind.annotation.*;
 import com.nwg.ezpay.service.UPITransactionService;
 import com.nwg.ezpay.entity.UPITransaction;
 
+import com.nwg.ezpay.exception.*;
+
+/**
+ * REST Controller for managing UPI transactions.
+ * Provides endpoints for creating, reading, updating, and deleting UPI
+ * transactions.
+ */
 @RestController
 @RequestMapping("upi/transactions")
 public class UPITransactionController {
 
+    /** Service layer for UPI transaction operations */
     private final UPITransactionService upiTransactionService;
 
+    /**
+     * Constructor for dependency injection
+     * 
+     * @param upiTransactionService the service to handle UPI transaction operations
+     */
     public UPITransactionController(UPITransactionService upiTransactionService) {
         super();
         this.upiTransactionService = upiTransactionService;
     }
 
-    // ✅ Get all transactions
+    /**
+     * Retrieves all UPI transactions
+     * 
+     * @return ResponseEntity with list of all transactions, or no content if none
+     *         exist
+     */
     @GetMapping("/all")
     public ResponseEntity<List<UPITransaction>> showAllUPITransactions() {
         List<UPITransaction> transactions = upiTransactionService.showAllUPITransactions();
@@ -31,47 +48,53 @@ public class UPITransactionController {
         return ResponseEntity.ok(transactions);
     }
 
-    // ✅ Create transaction
+    /**
+     * Creates a new UPI transaction
+     * 
+     * @param upiTransaction the transaction details to create
+     * @return ResponseEntity containing the created transaction with HTTP 201
+     *         status
+     */
     @PostMapping("/create")
     public ResponseEntity<UPITransaction> createTransaction(@RequestBody UPITransaction upiTransaction) {
         UPITransaction createdTransaction = upiTransactionService.addUPITransaction(upiTransaction);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTransaction);
     }
 
-    // ✅ Verify transaction pin
-//    @PostMapping("/{id}/verify")
-//    public ResponseEntity<UPITransaction> verifyTransaction(@PathVariable Integer id, @RequestParam String pin) {
-//        try {
-//            UPITransaction verifiedTransaction = upiTransactionService.verifyTransactionPin(id, pin);
-//            return ResponseEntity.ok(verifiedTransaction);
-//        } catch (RuntimeException e) {
-//        	System.out.println(e);
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//    }
-    
+    /**
+     * Verifies a transaction using PIN
+     * 
+     * @param id  the transaction ID to verify
+     * @param pin the PIN to verify against
+     * @return ResponseEntity with verified transaction or appropriate error status
+     *         404 if transaction not found
+     *         409 if transaction state conflicts
+     *         400 if invalid parameters
+     *         500 for unexpected errors
+     */
     @PostMapping("/{id}/verify")
     public ResponseEntity<?> verifyTransaction(@PathVariable Integer id, @RequestParam String pin) {
         try {
             UPITransaction verifiedTransaction = upiTransactionService.verifyTransactionPin(id, pin);
             return ResponseEntity.ok(verifiedTransaction);
-
-        } catch (NoSuchElementException e) {
+        } catch (TransactionNotFoundException | AccountNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-
-        } catch (IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidPinException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        } catch (InsufficientBalanceException | InvalidAmountException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Unexpected error: " + e.getMessage());
         }
     }
 
-
-    // ✅ Delete transaction
+    /**
+     * Deletes a UPI transaction
+     * 
+     * @param id the transaction ID to delete
+     * @return ResponseEntity with success message, or 404 if transaction not found
+     */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteTransaction(@PathVariable int id) {
         boolean deleted = upiTransactionService.deleteUPITransaction(id);
@@ -83,7 +106,12 @@ public class UPITransactionController {
         }
     }
 
-    // ✅ Get by ID
+    /**
+     * Retrieves a specific transaction by ID
+     * 
+     * @param id the transaction ID to look up
+     * @return ResponseEntity with the transaction if found, or 404 if not found
+     */
     @GetMapping("/{id}")
     public ResponseEntity<UPITransaction> getTransactionById(@PathVariable int id) {
         return upiTransactionService.getUPITransactionById(id)
@@ -91,7 +119,13 @@ public class UPITransactionController {
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    // ✅ Get by Status
+    /**
+     * Retrieves all transactions with a specific status
+     * 
+     * @param status the status to filter by
+     * @return ResponseEntity with list of matching transactions, or no content if
+     *         none exist
+     */
     @GetMapping("/status/{status}")
     public ResponseEntity<List<UPITransaction>> getTransactionsByStatus(@PathVariable String status) {
         List<UPITransaction> transactions = upiTransactionService.getUPITransactionsByStatus(status);

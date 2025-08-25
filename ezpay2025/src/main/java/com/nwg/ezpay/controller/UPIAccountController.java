@@ -11,19 +11,34 @@ import com.nwg.ezpay.service.UPIAccountService;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * REST Controller for managing UPI accounts.
+ * Provides endpoints for CRUD operations on UPI accounts.
+ */
 @RestController
 @RequestMapping("/upi/accounts")
 public class UPIAccountController {
 
+    /** Service layer for UPI account operations */
     @Autowired
     private UPIAccountService upiAccountService;
 
+    /**
+     * Constructor for dependency injection
+     * 
+     * @param upiAccountService the service to handle UPI account operations
+     */
     public UPIAccountController(UPIAccountService upiAccountService) {
         super();
         this.upiAccountService = upiAccountService;
     }
 
-    // ✅ Create new account
+    /**
+     * Creates a new UPI account
+     * 
+     * @param upiAccount the account details to create
+     * @return ResponseEntity containing the created account with HTTP 201 status
+     */
     @PostMapping("/create")
     public ResponseEntity<UPIAccount> createAccount(
             @RequestBody UPIAccount upiAccount) {
@@ -31,7 +46,11 @@ public class UPIAccountController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAccount);
     }
 
-    // ✅ Get all accounts
+    /**
+     * Retrieves all UPI accounts
+     * 
+     * @return ResponseEntity with list of all accounts, or no content if none exist
+     */
     @GetMapping("/all")
     public ResponseEntity<List<UPIAccount>> getAllAccounts() {
         List<UPIAccount> accounts = upiAccountService.getAllAccounts();
@@ -41,15 +60,26 @@ public class UPIAccountController {
         return ResponseEntity.ok(accounts);
     }
 
-    // ✅ Get account by UPI ID
+    /**
+     * Retrieves a specific UPI account by its UPI ID
+     * 
+     * @param upiId the UPI ID to look up
+     * @return ResponseEntity with the account if found, or 404 if not found
+     */
     @GetMapping("/{upiId}")
     public ResponseEntity<UPIAccount> getAccount(@PathVariable String upiId) {
         Optional<UPIAccount> accountOpt = upiAccountService.getAccountByUpiId(upiId);
         return accountOpt.map(ResponseEntity::ok)
-                         .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    // ✅ Update balance
+    /**
+     * Updates the balance of a UPI account
+     * 
+     * @param upiId      the UPI ID of the account to update
+     * @param newBalance the new balance to set
+     * @return ResponseEntity with the updated account, or 404 if account not found
+     */
     @PutMapping("/{upiId}/balance")
     public ResponseEntity<UPIAccount> updateBalance(
             @PathVariable String upiId,
@@ -62,7 +92,12 @@ public class UPIAccountController {
         }
     }
 
-    // ✅ Delete account
+    /**
+     * Deletes a UPI account
+     * 
+     * @param upiId the UPI ID of the account to delete
+     * @return ResponseEntity with success message, or 404 if account not found
+     */
     @DeleteMapping("/{upiId}")
     public ResponseEntity<String> deleteAccount(@PathVariable String upiId) {
         Optional<UPIAccount> accountOpt = upiAccountService.getAccountByUpiId(upiId);
