@@ -15,16 +15,16 @@ import com.nwg.ezpay.repository.UPITransactionRepository;
 
 @Service
 public class UPITransactionService {
-	@Autowired
-	private UPITransactionRepository upiTransactionRepository;
 	
-	@Autowired
-	private UPIAccountRepository upiAccountRepository;
-	
-	public UPITransactionService(UPITransactionRepository upiTransactionRepository) {
-		super();
-		this.upiTransactionRepository = upiTransactionRepository;
-	}
+	private final UPITransactionRepository upiTransactionRepository;
+    private final UPIAccountRepository upiAccountRepository;
+
+    @Autowired
+    public UPITransactionService(UPITransactionRepository upiTransactionRepository,
+                                 UPIAccountRepository upiAccountRepository) {
+        this.upiTransactionRepository = upiTransactionRepository;
+        this.upiAccountRepository = upiAccountRepository;
+    }
 	
     public UPITransaction addUPITransaction(UPITransaction upiTransaction) {
         if (upiTransaction.getReceiverUpiId() == null ||
