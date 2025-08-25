@@ -2,6 +2,11 @@ package com.nwg.ezpay.service;
 
 import com.nwg.ezpay.entity.UPIAccount;
 import com.nwg.ezpay.entity.UPITransaction;
+import com.nwg.ezpay.exception.AccountNotFoundException;
+import com.nwg.ezpay.exception.InsufficientBalanceException;
+import com.nwg.ezpay.exception.InvalidAmountException;
+import com.nwg.ezpay.exception.InvalidPinException;
+import com.nwg.ezpay.exception.TransactionNotFoundException;
 import com.nwg.ezpay.repository.UPIAccountRepository;
 import com.nwg.ezpay.repository.UPITransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,27 +19,18 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for {@link UPITransactionService}.
  *
- * This class validates transaction creation, PIN verification,
+ * Validates transaction creation, PIN verification,
  * fetching, and deletion logic using Mockito.
  *
- * Author: Aditi Roy
+ * Author: Aditi Roy (edited for corrected service)
  */
 class UPITransactionServiceTest {
 
@@ -50,10 +46,6 @@ class UPITransactionServiceTest {
     private UPIAccount senderAccount;
     private UPITransaction testTransaction;
 
-    /**
-     * Setup executed before each test case.
-     * Initializes mocks and test data.
-     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -74,9 +66,6 @@ class UPITransactionServiceTest {
 
     // ---------- ADD TRANSACTION ----------
 
-    /**
-     * Test adding a valid transaction successfully.
-     */
     @Test
     void testAddTransaction_Success() {
         when(upiAccountRepository.findByUpiId("john@upi")).thenReturn(Optional.of(senderAccount));
@@ -89,9 +78,6 @@ class UPITransactionServiceTest {
         verify(upiTransactionRepository, times(1)).save(testTransaction);
     }
 
-    /**
-     * Test adding transaction with invalid UPI ID throws exception.
-     */
     @Test
     void testAddTransaction_InvalidUpiId() {
         testTransaction.setReceiverUpiId("invalidupi");
@@ -102,26 +88,39 @@ class UPITransactionServiceTest {
         assertEquals("Invalid UPI ID format.", ex.getMessage());
     }
 
-    /**
-     * Test adding transaction with insufficient balance throws exception.
-     */
+    @Test
+    void testAddTransaction_InvalidAmount() {
+        testTransaction.setAmount(0);
+
+        InvalidAmountException ex = assertThrows(InvalidAmountException.class,
+                () -> upiTransactionService.addUPITransaction(testTransaction));
+
+        assertEquals("Amount must be greater than zero.", ex.getMessage());
+    }
+
+    @Test
+    void testAddTransaction_AccountNotFound() {
+        when(upiAccountRepository.findByUpiId("john@upi")).thenReturn(Optional.empty());
+
+        AccountNotFoundException ex = assertThrows(AccountNotFoundException.class,
+                () -> upiTransactionService.addUPITransaction(testTransaction));
+
+        assertTrue(ex.getMessage().contains("Sender account not found for UPI ID"));
+    }
+
     @Test
     void testAddTransaction_InsufficientBalance() {
         senderAccount.setBalance(500); // Less than transaction amount
-
         when(upiAccountRepository.findByUpiId("john@upi")).thenReturn(Optional.of(senderAccount));
 
-        Exception ex = assertThrows(IllegalArgumentException.class,
+        InsufficientBalanceException ex = assertThrows(InsufficientBalanceException.class,
                 () -> upiTransactionService.addUPITransaction(testTransaction));
 
-        assertEquals("Insufficient balance.", ex.getMessage());
+        assertEquals("Insufficient balance in sender's account.", ex.getMessage());
     }
 
     // ---------- VERIFY PIN ----------
 
-    /**
-     * Test verifying correct PIN updates transaction to SUCCESS.
-     */
     @Test
     void testVerifyTransactionPin_Success() {
         when(upiTransactionRepository.findById(101)).thenReturn(Optional.of(testTransaction));
@@ -135,36 +134,41 @@ class UPITransactionServiceTest {
         assertEquals(4000, senderAccount.getBalance()); // 5000 - 1000
     }
 
-    /**
-     * Test verifying transaction with wrong PIN sets status to FAILED.
-     */
     @Test
     void testVerifyTransactionPin_WrongPin() {
         when(upiTransactionRepository.findById(101)).thenReturn(Optional.of(testTransaction));
         when(upiAccountRepository.findByUpiId("john@upi")).thenReturn(Optional.of(senderAccount));
-        when(upiTransactionRepository.save(any(UPITransaction.class))).thenReturn(testTransaction);
 
-        UPITransaction result = upiTransactionService.verifyTransactionPin(101, "9999");
+        InvalidPinException ex = assertThrows(InvalidPinException.class,
+                () -> upiTransactionService.verifyTransactionPin(101, "9999"));
 
-        assertEquals("FAILED", result.getStatus());
+        assertEquals("Invalid PIN provided", ex.getMessage());
     }
 
-    /**
-     * Test verifying a non-existent transaction throws exception.
-     */
     @Test
     void testVerifyTransactionPin_TransactionNotFound() {
         when(upiTransactionRepository.findById(999)).thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class,
+        TransactionNotFoundException ex = assertThrows(TransactionNotFoundException.class,
                 () -> upiTransactionService.verifyTransactionPin(999, "1234"));
+
+        assertEquals("Transaction not found", ex.getMessage());
+    }
+
+    @Test
+    void testVerifyTransactionPin_InsufficientBalance() {
+        testTransaction.setAmount(6000); // more than balance
+        when(upiTransactionRepository.findById(101)).thenReturn(Optional.of(testTransaction));
+        when(upiAccountRepository.findByUpiId("john@upi")).thenReturn(Optional.of(senderAccount));
+
+        InsufficientBalanceException ex = assertThrows(InsufficientBalanceException.class,
+                () -> upiTransactionService.verifyTransactionPin(101, "1234"));
+
+        assertEquals("Insufficient balance in sender's account", ex.getMessage());
     }
 
     // ---------- FETCH ALL ----------
 
-    /**
-     * Test fetching all transactions returns a list.
-     */
     @Test
     void testShowAllTransactions() {
         when(upiTransactionRepository.findAll()).thenReturn(Arrays.asList(testTransaction));
@@ -175,9 +179,6 @@ class UPITransactionServiceTest {
         verify(upiTransactionRepository, times(1)).findAll();
     }
 
-    /**
-     * Test fetching transactions returns empty list when none exist.
-     */
     @Test
     void testShowAllTransactions_Empty() {
         when(upiTransactionRepository.findAll()).thenReturn(Collections.emptyList());
@@ -189,9 +190,6 @@ class UPITransactionServiceTest {
 
     // ---------- DELETE ----------
 
-    /**
-     * Test deleting existing transaction returns true.
-     */
     @Test
     void testDeleteTransaction_Found() {
         when(upiTransactionRepository.existsById(101)).thenReturn(true);
@@ -202,9 +200,6 @@ class UPITransactionServiceTest {
         verify(upiTransactionRepository, times(1)).deleteById(101);
     }
 
-    /**
-     * Test deleting non-existing transaction returns false.
-     */
     @Test
     void testDeleteTransaction_NotFound() {
         when(upiTransactionRepository.existsById(999)).thenReturn(false);
@@ -217,9 +212,6 @@ class UPITransactionServiceTest {
 
     // ---------- FIND BY ID ----------
 
-    /**
-     * Test finding transaction by ID when it exists.
-     */
     @Test
     void testGetTransactionById_Found() {
         when(upiTransactionRepository.findById(101)).thenReturn(Optional.of(testTransaction));
@@ -229,9 +221,6 @@ class UPITransactionServiceTest {
         assertTrue(result.isPresent());
     }
 
-    /**
-     * Test finding transaction by ID when it does not exist.
-     */
     @Test
     void testGetTransactionById_NotFound() {
         when(upiTransactionRepository.findById(999)).thenReturn(Optional.empty());
@@ -243,9 +232,6 @@ class UPITransactionServiceTest {
 
     // ---------- FIND BY STATUS ----------
 
-    /**
-     * Test fetching transactions by status returns matching list.
-     */
     @Test
     void testGetTransactionsByStatus() {
         when(upiTransactionRepository.findByStatus("PENDING")).thenReturn(Arrays.asList(testTransaction));
