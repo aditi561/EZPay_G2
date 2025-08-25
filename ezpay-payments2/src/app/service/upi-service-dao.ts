@@ -10,19 +10,11 @@ export interface UpiServiceDAO {
   
   // Get transaction by ID
   getTransactionById(id: string): Observable<UpiTransaction | undefined>;
-  
-  // Get transactions by UPI ID
-  getTransactionsByUpiId(upiId: string): Observable<UpiTransaction[]>;
-  
+    
   // Get transactions by status
   getTransactionsByStatus(status: 'SUCCESS' | 'FAILED' | 'PENDING'): Observable<UpiTransaction[]>;
-  
-  // Update transaction status
-  updateTransactionStatus(id: string, status: 'SUCCESS' | 'FAILED' | 'PENDING'): Observable<UpiTransaction>;
-  
+    
   // Delete transaction (for testing purposes)
-  deleteTransaction(id: string): Observable<boolean>;
+  deleteTransaction(id: string): Observable<String>;
   
-  // Get transaction history for a specific date range
-  getTransactionsByDateRange(startDate: Date, endDate: Date): Observable<UpiTransaction[]>;
 }

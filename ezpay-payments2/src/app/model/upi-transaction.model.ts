@@ -1,10 +1,9 @@
 export interface UpiTransaction {
-  id: string;
-  upiId: string;
-  amount: number;
-  remarks?: string;
-  transactionDate: Date;
-  status: 'SUCCESS' | 'FAILED' | 'PENDING';
-  transactionType: 'DEBIT' | 'CREDIT';
-  referenceNumber: string;
+    id?: number;
+    senderUpiId: string;
+    receiverUpiId: string;
+    amount: number;
+    remarks?: string;
+    status: 'SUCCESS' | 'FAILED' | 'PENDING';
+    timestamp : Date;
 }

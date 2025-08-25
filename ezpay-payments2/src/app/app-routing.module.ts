@@ -7,8 +7,8 @@ import { PinEntryComponent } from './component/pin-entry/pin-entry.component';
 import { TransactionStatusSuccessComponent } from './component/transaction-status/transaction-status-success.component';
 import { TransactionStatusPendingComponent } from './component/transaction-status/transaction-status-pending.component';
 import { TransactionStatusFailureComponent } from './component/transaction-status/transaction-status-failure.component';
-import { TransactionHistoryComponent } from './component/transaction-history/transaction-history.component';
-import { BankTransactionHistoryComponent } from './component/bank-transaction-history/bank-transaction-history.component';
+// import { TransactionHistoryComponent } from './component/transaction-history/transaction-history.component';
+// import { BankTransactionHistoryComponent } from './component/bank-transaction-history/bank-transaction-history.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -18,19 +18,22 @@ const routes: Routes = [
   { path: 'bank-transfer', component: BankTransferComponent },
 
   // PIN entry route
-  { path: 'enter-pin', component: PinEntryComponent },
+  { 
+    path: 'pin-entry/:id', 
+    component: PinEntryComponent 
+  },
 
-  // Transaction status routes
+  //Transaction status routes
   { path: 'transaction-status/success', component: TransactionStatusSuccessComponent },
   { path: 'transaction-status/pending', component: TransactionStatusPendingComponent },
   { path: 'transaction-status/failure', component: TransactionStatusFailureComponent },
 
   // History routes
-  { path: 'transaction-history', component: TransactionHistoryComponent },
-  { path: 'bank-transaction-history', component: BankTransactionHistoryComponent },
+  // { path: 'transaction-history', component: TransactionHistoryComponent },
+  // { path: 'bank-transaction-history', component: BankTransactionHistoryComponent },
 
   // Fallback
-  { path: '**', redirectTo: '' }
+  // { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

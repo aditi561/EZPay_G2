@@ -55,7 +55,7 @@
     </div>
 
     <!-- Recent Transactions Section -->
-    <div class="recent-transactions-panel">
+    <!-- <div class="recent-transactions-panel">
       <div class="panel-header">
         <h3>Recent Transactions</h3>
         <button class="view-all-btn" (click)="toggleHistory()">View All</button>
@@ -64,7 +64,7 @@
       <div class="transaction-list" *ngIf="recentTransactions.length > 0">
         <div class="transaction-item" *ngFor="let transaction of recentTransactions">
           <div class="transaction-info">
-            <span class="upi-id">{{ transaction.upiId }}</span>
+            <span class="upi-id">{{ transaction.receiverupiId }}</span>
             <span class="date">{{ formatDate(transaction.transactionDate) }}</span>
           </div>
           <div class="transaction-amount">
@@ -82,6 +82,6 @@
         <p>No recent transactions</p>
         <small>Your transaction history will appear here</small>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
